@@ -1,0 +1,29 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: fishy-deployment
+  namespace: fishy-site
+  labels:
+    app: node
+spec:
+  replicas: 3
+  progressDeadlineSeconds: 600
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: node
+  template:
+    metadata:
+      labels:
+        app: node
+    spec:
+      containers:
+      - name: node
+        image: asskit/fishy-site:build-20250906124332 # {"$imagepolicy": "fishy-site:fishy-image-policy"}
+        ports:
+        - name: web
+          containerPort: 8080
+      imagePullSecrets:
+      - name: homepage-registry

@@ -1,0 +1,16 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: homepage-registry
+  namespace: nzdev-org-homepage
+spec:
+  encryptedData:
+    .dockerconfigjson: AgAxhep8Q9gFYcLArLUo7IypYs8GrRuwrGaJ5XNPDXXHdXLP/IzWrUyBuQ6sFIcNgnMktHOsc3tSjC0l7uOBFGDSAawAEMOSO07WrT8qPIB8ZiA/Jwyh3bVeKEdHDJYudOZSpSu9kwNm2Hb73czszk9eruI1jaGGBmAjKhFdSu8r01DyNumMN8UTGc7BergXuzc3csDP8AaQ2mJGqUsdi5UZDdqn/U8xBMgiybf8n3ytgVcOs8N3imkGYo/soTBTDurQmYZ5R5AbTD1dAE8eoZFA48W9Zk56qmLGDnZZ7XUu8LpmXKTwm1kqemKsx+dGDvMl2OxDJr+2zc2PdAPBUv4YOVRznVeNONmbYEQ5Y4DG+UIJYixpfXKlvEeHtyIVfFGHdMT+GT5S5JFy7tZ7t778qx5ekVXn9OmVaqpCHo4mU5U06V7m0Gk3WF+kxrgY7Pqy3AiiU4Ak34/aMzWHVEinMmxSO/tit6B/OPD8V7T9OsTkgQ6UJ+AdBpCYLqBFMwguNNLxpstfIcRejNaxS5fXboHvAjZKLlBI8BDLr6jDUwC6yVpsdIfpQB9/bhkkRzI5xTJylmicfybr8dz5JS3DSgWFmS3gZSNFwW7AdFkuyJeuaozmmm1jNNITzHKi4WH8shcOJ8uR8jQv3Gk8b6VBDT7DivpFSIJqGiXcHIPA0gWnFjlbHmJ9GlCbNebQB4YRAi/2VH2D85Is2Jn4r9IzLflHyzJHeDUZVkO9s0H2xyFTM6x8spq7wj9sdr2EJQhz9GOt4U4eBLURd+2azHIsWXE+lfHW65kRypYn73WKKLtZaESVxwOWIcAigG2LXC/k050ufaQskAddzxT98LjBZlriwDT9XXequNrI5Aswva/y6g==
+  template:
+    metadata:
+      creationTimestamp: null
+      name: homepage-registry
+      namespace: nzdev-org-homepage
+    type: kubernetes.io/dockerconfigjson

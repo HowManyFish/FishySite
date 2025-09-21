@@ -1,0 +1,44 @@
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  namespace: fishy-site
+  name: fishy-image-repo
+spec:
+  image: asskit/fishy-site
+  interval: 3m
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  namespace: fishy-site
+  name: fishy-image-policy
+spec:
+  imageRepositoryRef:
+    name: fishy-image-repo
+    namespace: fishy-site
+  filterTags:
+    pattern: '^build-(?P<timesamp>.*)$'
+    extract: '$timestamp'
+  policy:
+    alphabetical:
+      order: asc
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageUpdateAutomation
+metadata:
+  namespace: fishy-site
+  name: fishy-image-automation
+spec:
+  interval: 5m
+  sourceRef:
+    kind: GitRepository
+    name: fishy-site
+  git:
+    commit:
+      author:
+        email: fluxcdbot@nzdev.org
+        name: fluxcdbot
+    push:
+      branch: main
+  update:
+    path: ./
