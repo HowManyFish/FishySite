@@ -75,5 +75,5 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
             ${{ steps.meta.outputs.tags }}
-            ${{ secrets.DOCKERHUB_USERNAME }}/nzdev-org:build-${{ env.TIME_TAG }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/fishy-site:build-${{ env.TIME_TAG }}
           labels: ${{ steps.meta.outputs.labels }}
