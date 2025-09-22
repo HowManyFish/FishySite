@@ -6,6 +6,24 @@ metadata:
 spec:
   image: asskit/fishy-site
   interval: 3m
+  secretRef:
+    name: docker-reg
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: docker-reg
+  namespace: fishy-site
+spec:
+  encryptedData:
+    .dockerconfigjson: AgAP9rcOxvGT97/k8TOM70ZTXLcg6VZjloqZOjPf7e34GFuZkORv/aPgNQ/TrzlTP7ca6zmI9xm/IKq3Kx95pKKHAuznhU2jRQq7FZLDv8P4j7+w0zQfIS8ffrV3URMyt6ZGYW7KvdmQ2WVoxFhBRdtcWizaCp4baITG5a0GKbyhRJoidDBpWN2VtYsUJOqfwFVC53fwoV0ohRwc2pxnvWwS4RHB/bTiaBP+koHRZJU/5bHg8JJ6s3y+kcb0+ZihbnGSF4a0GCsFL8q5ueXRXAwWB8rWnkXsJkAoejjZLn1MrVntXmPgGbBD6ORxEOHV0/PXXNbfzuqURncsyRIgEkXqjainRJlbCssGAD+rEoSbSBHZDMnD8hntwzt25In21IqNykO2nCEOEuVQA+/7N1k0m00zQyOsJy8Ow/OYvilYo9imra+Z6YtQjSvuBajcn6X1WUUAlsMSNrF4gUNzyOzfAfj9SxPFY83iylE+6FQ0oSlbJe2H+E/E85tSc1sR/BdjRP3nc+3OIzlswQo7D0sJHrpJuAn/wM2tvcabrKNVH5EclShFqVtnpIqpTmULBShkUA/D36xsMWNmBlVqbvkHqHM7cSkRIyO4yivFByN9NF0c2yiqbwdR6GCo+MTGqK8PglAoIFM67K68aGMgojmuzXz61RN15RJa8MELWKFLidE46aR//8Fp6qoNDPOVauGrVuyxU6yuLp6/+ZBCz7YFJhxUj/44v6g5FHvpWv5i0nivNrd1wVRatn37GEQA5UfSrP5TmZWRb9gYdEoxjmsfzp63Ja/jLmeZs5uOY5RDv2gNrFRCFot9qYTf5FUONG2wni9Gl6n5QnVotMOGFim0ACZkKH1wlXQrkLwAyun2wlOjFg==
+  template:
+    metadata:
+      creationTimestamp: null
+      name: docker-reg
+      namespace: fishy-site
+    type: kubernetes.io/dockerconfigjson
 ---
 apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImagePolicy
