@@ -8,6 +8,6 @@ spec:
   selector:
     app: node
   ports:
-  - name: http
+  - name: web
     targetPort: 8080
     port: 80
