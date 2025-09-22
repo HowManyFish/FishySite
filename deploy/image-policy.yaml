@@ -47,7 +47,7 @@ metadata:
   namespace: fishy-site
   name: fishy-image-automation
 spec:
-  interval: 5m
+  interval: 2m
   sourceRef:
     kind: GitRepository
     name: fishy-site
