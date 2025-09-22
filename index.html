@@ -1,13 +1,471 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SmartFish Monitor, Showcase</title>
+  <style>
+    :root {
+      --bg0: #060b11;
+      --bg1: #0a1521;
+      --card: #0f1924;
+      --ink: #e6eef5;
+      --muted: #9bb1c5;
+      --line: #1b2a3a;
+      --accentA: #38bdf8;
+      --accentB: #22c55e;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --shadow: 0 14px 44px rgba(0,0,0,.36);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 800px at 80% -20%, rgba(56,189,248,.06), transparent 60%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      min-height: 100dvh;
+    }
+
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 22px; }
+
+    /* nav */
+    .nav { display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center; }
+    .brand { display: flex; gap: 10px; align-items: center; font-weight: 800; letter-spacing: .2px; }
+    .logo { width: 38px; height: 38px; border-radius: 11px; background: conic-gradient(from 200deg, var(--accentA), var(--accentB)); box-shadow: 0 10px 28px rgba(56,189,248,.25), 0 14px 36px rgba(34,197,94,.18); position: relative; }
+    .logo::after { content: ""; position: absolute; inset: 6px; border-radius: 8px; background: radial-gradient(circle at 30% 25%, rgba(255,255,255,.35), transparent 60%); }
+
+    .tabs { display: inline-flex; gap: 10px; padding: 6px; border-radius: 999px; background: transparent; border: 0; }
+    .tab {
+      appearance: none; -webkit-appearance: none; border: 1px solid #223244;
+      background: #0f1b27; color: #a9bfd2; box-shadow: inset 0 1px 0 rgba(255,255,255,.04), 0 1px 0 rgba(0,0,0,.45);
+      padding: 9px 14px; border-radius: 999px; cursor: pointer; user-select: none; font-weight: 700;
+      transition: background .2s ease, color .2s ease, box-shadow .2s ease, transform .05s ease;
+    }
+    .tab:hover { background: #132235; color: #d7e6f2; }
+    .tab:active { transform: translateY(1px); }
+    .tab:focus-visible { outline: 2px solid rgba(56,189,248,.45); outline-offset: 2px; }
+    .tab.active {
+      background: linear-gradient(135deg, var(--accentA), var(--accentB));
+      color: #062013; border-color: transparent; box-shadow: 0 0 0 2px rgba(56,189,248,.25), 0 10px 26px rgba(0,0,0,.4);
+    }
+
+    /* card shell */
+    .card { position: relative; border-radius: var(--radius); background:
+      linear-gradient(180deg, rgba(16,26,38,.92), rgba(12,21,32,.96)),
+      radial-gradient(80% 120% at 10% -10%, rgba(56,189,248,.14), transparent 60%),
+      radial-gradient(90% 120% at 110% -10%, rgba(34,197,94,.14), transparent 60%);
+      border: 1px solid var(--line); box-shadow: var(--shadow); overflow: hidden; }
+    .card::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(255,255,255,.05), transparent 40%); }
+
+    .page { display: none; margin-top: 16px; }
+    .page.active { display: block; }
+    .inner { padding: clamp(18px, 3.5vw, 28px); display: grid; gap: 18px; }
+
+    /* home layout */
+    .homeGrid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 16px; }
+    @media (max-width: 900px) { .homeGrid { grid-template-columns: 1fr; } }
+    .title { font-size: clamp(26px, 4.4vw, 38px); line-height: 1.07; font-weight: 800; letter-spacing: .2px; }
+    .tag { color: var(--muted); font-size: 15px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip { padding: 7px 10px; border-radius: 999px; border: 1px solid var(--line); background: #0c141d; color: #cfe0ee; font-weight: 600; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+
+    /* 3d panel */
+    .stageWrap { position: relative; height: 420px; border-radius: 18px; border: 1px solid var(--line); background: #0b1520; overflow: hidden; }
+    .hint { position: absolute; top: 10px; left: 10px; padding: 6px 10px; border-radius: 999px; background: rgba(56,189,248,.18); border: 1px solid rgba(56,189,248,.35); color: #bfeeff; font-weight: 700; font-size: 12px; }
+    canvas { display: block; width: 100%; height: 100%; }
+
+    /* product page */
+    .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    @media (max-width: 900px) { .grid3 { grid-template-columns: 1fr; } }
+    .feature { padding: 14px; border-radius: 16px; background: #0b1520; border: 1px solid var(--line); display: grid; gap: 8px; }
+    .feature h3 { margin: 0; font-size: 16px; }
+    .feature p { margin: 0; color: var(--muted); font-size: 14px; }
+
+    /* team page */
+    .teamGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    @media (max-width: 1000px) { .teamGrid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .teamGrid { grid-template-columns: 1fr; } }
+    .person { padding: 16px; border-radius: 16px; background: #0b1520; border: 1px solid var(--line); display: grid; gap: 10px; align-content: start; }
+    .avatar { width: 72px; height: 72px; border-radius: 18px; background: linear-gradient(135deg, var(--accentA), var(--accentB)); display: grid; place-items: center; font-weight: 900; color: #06220f; }
+    .role { color: var(--muted); font-size: 13px; }
+    .pill { padding: 6px 10px; border-radius: 999px; border: 1px solid var(--line); background: #0f1924; color: #cfe0ee; font-size: 12px; }
+
+    .foot { color: var(--muted); font-size: 13px; text-align: center; padding: 14px 0 6px; }
+
+    /* dynamic ocean background */
+    .bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
+    .bg::before,
+    .bg::after { content: ""; position: absolute; inset: -20%; filter: blur(40px); opacity: .16; }
+    /* swirling accent layer */
+    .bg::before {
+      background:
+        radial-gradient(50% 60% at 20% 10%, rgba(56,189,248,.60), transparent 60%),
+        radial-gradient(60% 50% at 85% 20%, rgba(34,197,94,.50), transparent 60%),
+        conic-gradient(from 0deg at 50% 60%, rgba(255,255,255,.12), rgba(255,255,255,0) 35%, rgba(255,255,255,.12) 70%, rgba(255,255,255,0) 100%);
+      animation: swirl 60s linear infinite;
+      mix-blend-mode: screen;
+    }
+    /* deep vignette layer */
+    .bg::after {
+      background:
+        radial-gradient(120% 80% at 50% 120%, rgba(0,0,0,.55), transparent 60%),
+        radial-gradient(150% 100% at -10% -20%, rgba(10,30,50,.45), transparent 60%);
+      animation: floaty 22s ease-in-out infinite alternate;
+    }
+    @keyframes swirl { to { transform: rotate(360deg); } }
+    @keyframes floaty { from { transform: translateY(-10px); } to { transform: translateY(10px); } }
+
+    /* notes page styles */
+    .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .toolbtn { padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: #0f1b27; color: #e6eef5; font-weight: 700; cursor: pointer; }
+    .toolbtn.primary { background: linear-gradient(135deg, var(--accentA), var(--accentB)); color: #062013; border-color: transparent; }
+    .form { display: grid; gap: 12px; margin-top: 14px; }
+    .group { padding: 14px; border-radius: 14px; background: #0b1520; border: 1px solid var(--line); display: grid; gap: 8px; }
+    .group h3 { margin: 0 0 6px 0; font-size: 16px; }
+    .q { display: grid; gap: 6px; }
+    .qlabel { color: var(--muted); font-size: 13px; }
+    .qinput { width: 100%; padding: 10px 12px; border-radius: 12px; border: 1px solid #223244; background: #0f1b27; color: #e6eef5; resize: none; min-height: 48px; }
+  </style>
+</head>
+<body>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="wrap">
+    <!-- nav -->
+    <div class="nav">
+      <div class="brand"><div class="logo"></div><div>SmartFish Monitor</div></div>
+      <div class="tabs" role="tablist" aria-label="Main">
+        <button class="tab active" data-page="home" role="tab" aria-selected="true">Home</button>
+        <button class="tab" data-page="product" role="tab" aria-selected="false">Product</button>
+        <button class="tab" data-page="team" role="tab" aria-selected="false">Team</button>
+        <button class="tab" data-page="notes" role="tab" aria-selected="false">Notes</button>
+      </div>
+      <div></div>
+    </div>
+
+    <!-- home page -->
+    <section id="page-home" class="page active">
+      <article class="card">
+        <div class="inner">
+          <div class="homeGrid">
+            <div>
+              <div class="title">SmartFish Monitor</div>
+              <div class="tag">A clean showcase card, with a 3D logo that you can rotate. Zero clutter, high trust.</div>
+              <div class="chips" style="margin-top:10px;">
+                <span class="chip">Realtime ready</span>
+                <span class="chip">Audit friendly</span>
+                <span class="chip">Mobile first</span>
+              </div>
+            </div>
+            <div class="stageWrap">
+              <div class="hint">Drag to rotate</div>
+              <canvas id="stage" aria-label="Interactive 3D model"></canvas>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- product page -->
+    <section id="page-product" class="page">
+      <article class="card">
+        <div class="inner">
+          <div class="title">Product overview</div>
+          <p class="tag">Simple words, strong story. This is a public card that explains SmartFish without technical noise.</p>
+          <div class="grid3" style="margin-top:8px;">
+            <div class="feature"><h3>Live tracking</h3><p>Catch totals and states in one glance. No deep menus, just the facts.</p></div>
+            <div class="feature"><h3>Proof of catch</h3><p>Photos and video links for each event. Easy review for regulators.</p></div>
+            <div class="feature"><h3>Quota safety</h3><p>Clear colors for thresholds. Green, amber, red. No guesswork.</p></div>
+            <div class="feature"><h3>Great on phones</h3><p>Fast load, large touch targets, clean type, happy skippers.</p></div>
+            <div class="feature"><h3>Private by default</h3><p>Only the right people see the right vessel. Clear roles.</p></div>
+            <div class="feature"><h3>Deploy anywhere</h3><p>Docker images, simple setup. Works local or cloud.</p></div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- team page -->
+    <section id="page-team" class="page">
+      <article class="card">
+        <div class="inner">
+          <div class="title">Team</div>
+          <div class="teamGrid" style="margin-top:10px;">
+            <div class="person">
+              <div class="avatar">A</div>
+              <div><strong>Alex</strong></div>
+              <div class="role">Product and frontend</div>
+              <div class="pill">Design systems</div>
+              <div class="pill">UX flows</div>
+            </div>
+            <div class="person">
+              <div class="avatar">J</div>
+              <div><strong>Joseph</strong></div>
+              <div class="role">Backend and data</div>
+              <div class="pill">APIs</div>
+              <div class="pill">Storage</div>
+            </div>
+            <div class="person">
+              <div class="avatar">H</div>
+              <div><strong>Harry</strong></div>
+              <div class="role">Devops and security</div>
+              <div class="pill">Docker</div>
+              <div class="pill">Monitoring</div>
+            </div>
+            <div class="person">
+              <div class="avatar">L</div>
+              <div><strong>Liam</strong></div>
+              <div class="role">Visuals and motion</div>
+              <div class="pill">Brand</div>
+              <div class="pill">Motion</div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- notes page -->
+    <section id="page-notes" class="page">
+      <article class="card">
+        <div class="inner">
+          <div class="title">Project notes and Q and A</div>
+          <p class="tag">Temporary page for the team. Fill in the fields, everything saves to this browser. You can export and import JSON to share.</p>
+          <div class="toolbar" style="margin:8px 0 6px;">
+            <button id="btnCopyMd" class="toolbtn primary">Copy answers as Markdown</button>
+            <button id="btnSaveJson" class="toolbtn">Download JSON</button>
+            <label class="toolbtn" for="fileImport" style="cursor:pointer;">Import JSON<input id="fileImport" type="file" accept="application/json" style="display:none;"/></label>
+            <button id="btnReset" class="toolbtn" title="Clear all fields">Reset all</button>
+          </div>
+          <div id="notesForm" class="form" aria-live="polite"></div>
+        </div>
+      </article>
+    </section>
+
+    <div class="foot">SmartFish, a clean public showcase. Use tabs to switch pages. You can drop this html into any static host.</div>
+  </div>
+
+  <!-- scripts -->
+  <script>
+    // simple tabs and hash routing
+    const tabs = document.querySelectorAll('.tab');
+    const pages = { home: document.getElementById('page-home'), product: document.getElementById('page-product'), team: document.getElementById('page-team'), notes: document.getElementById('page-notes') };
+    function show(name){ Object.values(pages).forEach(p=>p.classList.remove('active')); pages[name].classList.add('active'); tabs.forEach(t=>{ t.classList.toggle('active', t.dataset.page===name); t.setAttribute('aria-selected', t.dataset.page===name ? 'true' : 'false'); }); }
+    function fromHash(){ const n = location.hash.replace('#','') || 'home'; if(pages[n]) show(n); }
+    tabs.forEach(t=> t.addEventListener('click',()=>{ location.hash = t.dataset.page; }));
+    window.addEventListener('hashchange', fromHash); fromHash();
+  </script>
+  <script>
+    // Notes page generator and persistence
+    (function(){
+      const KEY = 'smartfish_notes_v1';
+      const container = document.getElementById('notesForm');
+      if(!container) return;
+
+      const groups = [
+        { title: 'Hero', items: [
+          'One sentence about the product, 8 to 14 words',
+          'Subtitle, the value you provide, 1 to 2 short sentences',
+          'Primary call to action, what the visitor should do on the site'
+        ]},
+        { title: 'Audience and pain', items: [
+          'Who the product is for, list 2 to 4 audiences',
+          'Main problems for these audiences, 1 to 2 bullets each'
+        ]},
+        { title: 'What it is and how it works', items: [
+          'What SmartFish Monitor does, one paragraph, no technical details',
+          'Three most important benefits, one sentence each',
+          'Data flow, from sensor to report, 3 steps'
+        ]},
+        { title: 'Hardware', items: [
+          'Controller or model name', 'Sensors included', 'Accuracy and ranges', 'Power and connectivity', 'Enclosure rating and temperature'
+        ]},
+        { title: 'Quotas and rules', items: [
+          'How quotas are calculated, day, week, month',
+          'Alert thresholds and what is critical',
+          'What happens when exceeded'
+        ]},
+        { title: 'Evidence and media', items: [
+          'What is attached as evidence', 'Where media is stored and retention'
+        ]},
+        { title: 'Security and compliance', items: [
+          'Standards or requirements you meet', 'Encryption and access control, short'
+        ]},
+        { title: 'Integrations and notifications', items: [
+          'Notification channels needed', 'External systems to integrate'
+        ]},
+        { title: 'Pricing and pilots', items: [
+          'How you plan to sell', 'Price range or by request', 'Pilots, where and with whom'
+        ]},
+        { title: 'Team', items: [
+          'Alex, role, achievements, city, links',
+          'Joseph, role, achievements, city, links',
+          'Harry, role, achievements, city, links',
+          'Liam, role, achievements, city, links',
+          'Photos yes or keep avatars'
+        ]},
+        { title: 'Social proof', items: [
+          'Partner or customer logos we can show', 'Two short testimonials'
+        ]},
+        { title: 'FAQ', items: [
+          'Three frequent customer questions with short answers'
+        ]},
+        { title: 'Contacts and legal', items: [
+          'Contact address and email', 'Country and city of registration', 'Privacy policy link or placeholder'
+        ]}
+      ];
+
+      // build form
+      let qIdx = 1;
+      const saved = JSON.parse(localStorage.getItem(KEY) || '{}');
+      groups.forEach(g => {
+        const group = document.createElement('section'); group.className = 'group';
+        const h = document.createElement('h3'); h.textContent = g.title; group.appendChild(h);
+        g.items.forEach(text => {
+          const q = document.createElement('div'); q.className = 'q';
+          const label = document.createElement('label'); label.className = 'qlabel';
+          const id = 'q'+qIdx++;
+          label.setAttribute('for', id);
+          label.textContent = `${id}. ${text}`;
+          const ta = document.createElement('textarea'); ta.id = id; ta.className = 'qinput'; ta.placeholder = 'Type here...';
+          if(saved[id]) ta.value = saved[id];
+          autosize(ta);
+          ta.addEventListener('input', ()=>{ autosize(ta); persist(); });
+          q.appendChild(label); q.appendChild(ta); group.appendChild(q);
+        });
+        container.appendChild(group);
+      });
+
+      function autosize(el){ el.style.height = 'auto'; el.style.height = Math.min(320, Math.max(48, el.scrollHeight)) + 'px'; }
+      function serialize(){
+        const data = {}; container.querySelectorAll('.qinput').forEach(t=> data[t.id] = t.value);
+        return data;
+      }
+      function persist(){ localStorage.setItem(KEY, JSON.stringify(serialize())); }
+
+      // toolbar actions
+      const btnCopy = document.getElementById('btnCopyMd');
+      const btnSave = document.getElementById('btnSaveJson');
+      const fileImport = document.getElementById('fileImport');
+      const btnReset = document.getElementById('btnReset');
+
+      btnCopy.addEventListener('click', ()=>{
+        let md = '# SmartFish Q and A\n\n';
+        let idx = 1; let gi = 0;
+        groups.forEach(g=>{
+          gi++; md += `## ${gi}. ${g.title}\n\n`;
+          g.items.forEach(text=>{
+            const id = 'q'+idx++; const val = (document.getElementById(id).value||'').trim();
+            md += `**${id}. ${text}**\n\n${val || '_pending_'}\n\n`;
+          });
+        });
+        navigator.clipboard.writeText(md).then(()=>{ btnCopy.textContent='Copied as Markdown'; setTimeout(()=>btnCopy.textContent='Copy answers as Markdown', 1400); });
+      });
+
+      btnSave.addEventListener('click', ()=>{
+        const blob = new Blob([JSON.stringify(serialize(), null, 2)], {type:'application/json'});
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'smartfish-notes.json'; a.click(); URL.revokeObjectURL(a.href);
+      });
+
+      fileImport.addEventListener('change', (e)=>{
+        const f = e.target.files && e.target.files[0]; if(!f) return;
+        const reader = new FileReader();
+        reader.onload = ()=>{
+          try{ const data = JSON.parse(reader.result); Object.keys(data).forEach(k=>{ const el = document.getElementById(k); if(el){ el.value = data[k]; autosize(el); } }); persist(); }
+          catch(err){ alert('Invalid JSON'); }
+        };
+        reader.readAsText(f);
+      });
+
+      btnReset.addEventListener('click', ()=>{
+        if(!confirm('Clear all fields for this browser')) return;
+        container.querySelectorAll('.qinput').forEach(t=>{ t.value=''; autosize(t); });
+        persist();
+      });
+    })();
+  </script>
+  <script>
+    // self tests, quick sanity checks in console
+    (function(){
+      const ok = [];
+      const err = [];
+      function must(cond, msg){ if(cond) ok.push(msg); else err.push(msg); }
+      must(document.querySelector('.tabs .tab[data-page="home"]'), 'home tab');
+      must(document.getElementById('page-home'), 'home page');
+      must(document.querySelector('.tabs .tab[data-page="product"]'), 'product tab');
+      must(document.getElementById('page-product'), 'product page');
+      must(document.querySelector('.tabs .tab[data-page="team"]'), 'team tab');
+      must(document.getElementById('page-team'), 'team page');
+      must(document.querySelector('.tabs .tab[data-page="notes"]'), 'notes tab');
+      must(document.getElementById('page-notes'), 'notes page');
+      must(!document.documentElement.innerHTML.includes('$1'), 'no $1 placeholders');
+      const res = { ok, err };
+      if(err.length){ console.warn('Self tests failed', res); }
+      else { console.log('Self tests passed', res); }
+    })();
+  </script>
+  <script type="module">
+    // lightweight three.js scene for the 3D logo
+    import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
+
+    const canvas = document.getElementById('stage');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(46, 2, 0.1, 100);
+    camera.position.set(0, 0.4, 3.6);
+
+    const light = new THREE.DirectionalLight(0xffffff, 1.2); light.position.set(2, 3, 4); scene.add(light);
+    const amb = new THREE.AmbientLight(0x6688aa, 0.6); scene.add(amb);
+
+    // gradient env
+    const grad = new THREE.Mesh(
+      new THREE.SphereGeometry(30, 32, 16),
+      new THREE.ShaderMaterial({
+        side: THREE.BackSide,
+        uniforms: { c1: { value: new THREE.Color('#0b1520') }, c2: { value: new THREE.Color('#08121a') } },
+        vertexShader: `varying vec3 vPos; void main(){ vPos = position; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+        fragmentShader: `varying vec3 vPos; uniform vec3 c1; uniform vec3 c2; void main(){ float h = normalize(vPos).y*0.5+0.5; gl_FragColor = vec4(mix(c2,c1,h),1.0); }`
+      })
+    );
+    scene.add(grad);
+
+    // fish like logo, simple shapes
+    const group = new THREE.Group(); scene.add(group);
+    const matA = new THREE.MeshStandardMaterial({ color: '#38bdf8', metalness: .4, roughness: .2 });
+    const matB = new THREE.MeshStandardMaterial({ color: '#22c55e', metalness: .4, roughness: .25 });
+
+    // body
+    const body = new THREE.Mesh(new THREE.TorusKnotGeometry(0.6, 0.18, 160, 24, 1, 3), matA);
+    body.rotation.x = Math.PI*0.12; group.add(body);
+
+    // tail
+    const tail = new THREE.Mesh(new THREE.ConeGeometry(0.35, 0.9, 3), matB); tail.position.x = 1.1; tail.rotation.z = Math.PI; group.add(tail);
+
+    // fin top
+    const fin1 = new THREE.Mesh(new THREE.ConeGeometry(0.14, 0.36, 3), matB); fin1.position.set(0, 0.45, 0); fin1.rotation.x = Math.PI; group.add(fin1);
+    // fin bottom
+    const fin2 = new THREE.Mesh(new THREE.ConeGeometry(0.14, 0.36, 3), matB); fin2.position.set(0, -0.45, 0); group.add(fin2);
+
+    // ring aura
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(1.45, 0.03, 16, 120), new THREE.MeshBasicMaterial({ color: '#1e2d3b' }));
+    group.add(ring);
+
+    // resize
+    function resize(){ const r = canvas.getBoundingClientRect(); const dpr = Math.min(2, window.devicePixelRatio||1); renderer.setPixelRatio(dpr); renderer.setSize(r.width, r.height, false); camera.aspect = r.width / Math.max(1, r.height); camera.updateProjectionMatrix(); }
+    window.addEventListener('resize', resize); setTimeout(resize, 0);
+
+    // drag controls
+    let isDown = false, sx = 0, sy = 0, rx = 0, ry = 0;
+    canvas.addEventListener('pointerdown', e=>{ isDown = true; sx = e.clientX; sy = e.clientY; canvas.setPointerCapture(e.pointerId); });
+    canvas.addEventListener('pointerup', e=>{ isDown = false; canvas.releasePointerCapture(e.pointerId); });
+    canvas.addEventListener('pointermove', e=>{
+      if(!isDown) return; const dx = e.clientX - sx; const dy = e.clientY - sy; ry += dx*0.005; rx += dy*0.005; sx = e.clientX; sy = e.clientY; });
+
+    // animate
+    let t = 0; function tick(){ t += 0.01; group.rotation.y = ry + Math.sin(t)*0.05; group.rotation.x = rx + Math.cos(t*0.8)*0.03; body.rotation.y += 0.01; tail.rotation.y = Math.sin(t*2)*0.3; renderer.render(scene, camera); requestAnimationFrame(tick); }
+    tick();
+  </script>
+</body>
 </html>
