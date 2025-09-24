@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -496,11 +499,14 @@
       object-fit: cover;
       display: block;
     }
-    .stageEmbed iframe {
-      width: 100%;
-      height: 100%;
-      border: 0;
-    }
+    .stageEmbed model-viewer {
+  width: 100%; /* Take up the full width */
+  height: 100%; /* Set a fixed height */
+  background-color: #222; /* Dark background for the model viewer */
+  border-radius: 8px; /* Rounded corners for the viewer */
+  border: 2px solid #333; /* Dark border */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7); /* Shadow around the viewer */
+}
     /* Background animation */
     .bg {
       position: fixed;
