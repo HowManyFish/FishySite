@@ -51,7 +51,7 @@
       top: calc(env(safe-area-inset-top) + 6px);
       z-index: 50;
       display: grid;
-      grid-template-columns: auto 1fr;
+      grid-template-columns: auto 1fr auto;
       gap: 12px;
       align-items: center;
       background: linear-gradient(180deg, rgba(6,11,17,.65), rgba(6,11,17,.18));
@@ -92,8 +92,22 @@
       -webkit-overflow-scrolling: touch;
       scroll-snap-type: x mandatory;
       mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
+      /* enable visible horizontal scrollbar */
+      scrollbar-width: thin; /* Firefox */
+      scrollbar-color: var(--accentA) transparent;
     }
-    .tabs::-webkit-scrollbar { display: none; }
+
+    /* Style the custom horizontal scrollbar for WebKit browsers */
+    .tabs::-webkit-scrollbar {
+      height: 6px;
+    }
+    .tabs::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .tabs::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, var(--accentA), var(--accentB));
+      border-radius: 3px;
+    }
     .tab {
       scroll-snap-align: start;
       appearance: none;
@@ -213,6 +227,72 @@
     }
     .btn.primary:hover {
       box-shadow: 0 12px 34px rgba(56,189,248,.28), 0 12px 32px rgba(34,197,94,.22);
+    }
+
+    /* mobile menu toggle (hamburger) */
+    .menu-toggle {
+      display: none;
+      border: 0;
+      background: transparent;
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 24px;
+      line-height: 1;
+      padding: 6px;
+    }
+    /* simple hamburger icon using pseudo elements */
+    .menu-toggle .bar {
+      display: block;
+      width: 24px;
+      height: 3px;
+      margin: 4px 0;
+      background: var(--ink);
+      border-radius: 2px;
+      transition: background .2s ease;
+    }
+    /* mobile navigation overlay */
+    .mobileNav {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      background: #0f1b27;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 8px;
+      width: 180px;
+      z-index: 100;
+    }
+    .mobileNav.open {
+      display: block;
+    }
+    .mobileNav button {
+      display: block;
+      width: 100%;
+      padding: 10px 12px;
+      margin: 2px 0;
+      border: 0;
+      background: transparent;
+      color: var(--ink);
+      text-align: left;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .mobileNav button:hover {
+      background: #132235;
+    }
+
+    /* wrapper for mobile menu toggle and overlay */
+    .mobileWrap {
+      display: none;
+      position: relative;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    @media (max-width: 600px) {
+      .mobileWrap { display: flex; }
     }
     /* Hero container */
     .homeGrid {
@@ -392,6 +472,7 @@
     /* Contact page spacing */
     #page-contact .grid3 { margin-top: 20px; }
     #page-contact .feature:last-child { margin-top: 20px; }
+
     /* Contact page */
     .foot {
       color: var(--muted);
@@ -470,6 +551,12 @@
       .tab { padding: 13px 18px; }
       .btn { padding: 16px 18px; }
     }
+    /* Larger tabs on mobile */
+    @media (max-width: 600px) {
+      .tab { padding: 14px 20px; font-size: 14px; }
+      .tabs { display: none; }
+      .menu-toggle { display: block; }
+    }
     a { color: inherit; text-decoration: none; }
   </style>
 </head>
@@ -487,7 +574,22 @@
         <button class="tab" data-page="pricing" role="tab" aria-selected="false">Pricing</button>
         <button class="tab" data-page="contact" role="tab" aria-selected="false">Contact</button>
       </div>
-      <!-- removed empty spacer column -->
+      <!-- mobile menu wrapper: holds the hamburger and overlay -->
+      <div class="mobileWrap">
+        <button class="menu-toggle" aria-label="Open menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+        <div class="mobileNav">
+          <button class="mobileTab" data-page="home">Home</button>
+          <button class="mobileTab" data-page="product">Product</button>
+          <button class="mobileTab" data-page="team">Team</button>
+          <button class="mobileTab" data-page="faq">FAQ</button>
+          <button class="mobileTab" data-page="pricing">Pricing</button>
+          <button class="mobileTab" data-page="contact">Contact</button>
+        </div>
+      </div>
     </div>
     <!-- Home page -->
     <section id="page-home" class="page active">
@@ -731,6 +833,25 @@
       }
     }, { threshold: 0.12 });
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // Mobile menu toggle logic. When the hamburger is clicked, show or hide
+    // the vertical menu. When a mobile nav item is selected, change the
+    // location hash and close the menu.
+    const menuToggleButton = document.querySelector('.menu-toggle');
+    const mobileNav = document.querySelector('.mobileNav');
+    if (menuToggleButton && mobileNav) {
+      menuToggleButton.addEventListener('click', () => {
+        mobileNav.classList.toggle('open');
+      });
+      mobileNav.querySelectorAll('.mobileTab').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const page = btn.dataset.page;
+          location.hash = page;
+          mobileNav.classList.remove('open');
+        });
+      });
+    }
+
   </script>
 </body>
 </html>
