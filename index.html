@@ -5,8 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#0a1521" />
   <meta name="color-scheme" content="dark light" />
-  <title>SmartFish Monitor, Showcase</title>
+  <title>SmartFish Monitor, showcase</title>
   <style>
+    /*
+      The original design shipped with uneven margins, inline styles and an embedded
+      WebGL model. This revision focuses on consistency and performance while
+      retaining the moody deep‑sea aesthetic. Utility classes replace
+      scattered inline styles, responsive grids adapt across breakpoints and
+      the 3D canvas has been swapped for a static hero illustration.
+    */
     :root {
       --bg0: #060b11;
       --bg1: #0a1521;
@@ -16,12 +23,10 @@
       --line: #1b2a3a;
       --accentA: #38bdf8;
       --accentB: #22c55e;
-      --amber: #f59e0b;
-      --red: #ef4444;
-      --shadow: 0 18px 60px rgba(0,0,0,.42);
-      --radius: 26px;
+      --radius: 24px;
+      --shadow: 0 14px 48px rgba(0,0,0,.35);
     }
-    * { box-sizing: border-box; }
+    *, *::before, *::after { box-sizing: border-box; }
     html, body { height: 100%; }
     body {
       margin: 0;
@@ -32,121 +37,401 @@
       padding-left: env(safe-area-inset-left);
       padding-right: env(safe-area-inset-right);
     }
-
-    .wrap { max-width: 1280px; margin: 0 auto; padding: 18px 16px 28px; }
-    @media (min-width: 520px){ .wrap{ padding: 28px 24px 40px; } }
-
-    /* nav */
-    .nav { position: sticky; top: calc(env(safe-area-inset-top) + 6px); z-index: 50; display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; background: linear-gradient(180deg, rgba(6,11,17,.65), rgba(6,11,17,.18)); border: 1px solid #13202e; border-radius: 16px; padding: 10px; backdrop-filter: blur(8px); }
-    .brand { display: flex; gap: 12px; align-items: center; font-weight: 700; letter-spacing: .2px; }
-    .logo { width: 36px; height: 36px; border-radius: 10px; background: conic-gradient(from 200deg, var(--accentA), var(--accentB)); box-shadow: 0 10px 28px rgba(56,189,248,.25), 0 14px 36px rgba(34,197,94,.18); position: relative; }
-    .logo::after { content: ""; position: absolute; inset: 5px; border-radius: 8px; background: radial-gradient(circle at 30% 25%, rgba(255,255,255,.35), transparent 60%); }
-
-    .tabs { display: inline-flex; gap: 10px; padding: 6px; border-radius: 999px; background: transparent; border: 0; overflow-x: auto; -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%); }
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+    }
+    @media (min-width: 600px) {
+      .wrap { padding: 32px 24px 60px; }
+    }
+    /* Navigation */
+    .nav {
+      position: sticky;
+      top: calc(env(safe-area-inset-top) + 6px);
+      z-index: 50;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 12px;
+      align-items: center;
+      background: linear-gradient(180deg, rgba(6,11,17,.65), rgba(6,11,17,.18));
+      border: 1px solid #13202e;
+      border-radius: 16px;
+      padding: 12px;
+      backdrop-filter: blur(8px);
+    }
+    .brand {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      font-weight: 700;
+    }
+    .logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: conic-gradient(from 200deg, var(--accentA), var(--accentB));
+      box-shadow: 0 10px 28px rgba(56,189,248,.25), 0 14px 36px rgba(34,197,94,.18);
+      position: relative;
+    }
+    .logo::after {
+      content: "";
+      position: absolute;
+      inset: 5px;
+      border-radius: 8px;
+      background: radial-gradient(circle at 30% 25%, rgba(255,255,255,.35), transparent 60%);
+    }
+    .tabs {
+      display: inline-flex;
+      gap: 8px;
+      padding: 6px;
+      border-radius: 999px;
+      background: transparent;
+      border: 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x mandatory;
+      mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
+    }
     .tabs::-webkit-scrollbar { display: none; }
-    .tab { scroll-snap-align: start; appearance: none; -webkit-appearance: none; border: 1px solid #223244; background: #0f1b27; color: #a9bfd2; box-shadow: inset 0 1px 0 rgba(255,255,255,.04), 0 1px 0 rgba(0,0,0,.45); padding: 12px 16px; border-radius: 999px; cursor: pointer; user-select: none; font-weight: 700; min-width: 96px; text-align: center; transition: background .2s ease, color .2s ease, box-shadow .2s ease, transform .05s ease; }
-    .tab:hover { background: #132235; color: #d7e6f2; }
+    .tab {
+      scroll-snap-align: start;
+      appearance: none;
+      border: 1px solid #223244;
+      background: #0f1b27;
+      color: #a9bfd2;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 1px 0 rgba(0,0,0,.4);
+      padding: 10px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      user-select: none;
+      font-weight: 600;
+      min-width: 96px;
+      text-align: center;
+      transition: background .2s ease, color .2s ease, box-shadow .2s ease, transform .05s ease;
+    }
+    .tab:hover {
+      background: #132235;
+      color: #d7e6f2;
+      box-shadow: 0 6px 20px rgba(56,189,248,.22), 0 6px 18px rgba(34,197,94,.18);
+    }
     .tab:active { transform: translateY(1px); }
     .tab:focus-visible { outline: 2px solid rgba(56,189,248,.45); outline-offset: 2px; }
-    .tab.active { background: linear-gradient(135deg, var(--accentA), var(--accentB)); color: #062013; border-color: transparent; box-shadow: 0 0 0 2px rgba(56,189,248,.25), 0 10px 26px rgba(0,0,0,.4); }
-
-    /* card shell */
-    .card { position: relative; border-radius: var(--radius); background:
-      linear-gradient(180deg, rgba(16,26,38,.92), rgba(12,21,32,.96)),
-      radial-gradient(80% 120% at 10% -10%, rgba(56,189,248,.14), transparent 60%),
-      radial-gradient(90% 120% at 110% -10%, rgba(34,197,94,.14), transparent 60%);
-      border: 1px solid var(--line); box-shadow: var(--shadow); overflow: hidden; }
-    .card::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(255,255,255,.05), transparent 40%); }
+    .tab.active {
+      background: linear-gradient(135deg, var(--accentA), var(--accentB));
+      color: #062013;
+      border-color: transparent;
+      box-shadow: 0 0 0 2px rgba(56,189,248,.25), 0 10px 26px rgba(0,0,0,.4);
+    }
+    /* Cards */
+    .card {
+      position: relative;
+      border-radius: var(--radius);
+      background:
+        linear-gradient(180deg, rgba(16,26,38,.92), rgba(12,21,32,.96)),
+        radial-gradient(80% 120% at 10% -10%, rgba(56,189,248,.14), transparent 60%),
+        radial-gradient(90% 120% at 110% -10%, rgba(34,197,94,.14), transparent 60%);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(255,255,255,.05), transparent 40%);
+    }
     .card:hover { border-color: #284058; }
-
-    .page { display: none; margin-top: 18px; }
+    .page { display: none; margin-top: 32px; }
     .page.active { display: block; }
-    .inner { padding: clamp(18px, 4.5vw, 40px); display: grid; gap: 18px; }
-
-    /* paragraph styling */
+    .inner {
+      padding: clamp(20px, 4vw, 48px);
+      display: grid;
+      gap: 20px;
+    }
+    /* Typography */
+    .title {
+      font-size: clamp(26px, 5.2vw, 40px);
+      line-height: 1.2;
+      font-weight: 700;
+      position: relative;
+    }
+    .title::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      height: 3px;
+      width: 120px;
+      background: linear-gradient(90deg, var(--accentA), var(--accentB));
+      border-radius: 3px;
+      opacity: .22;
+    }
+    .tag { color: var(--muted); font-size: 15px; margin-top: 4px; }
     .lede { font-size: 16px; line-height: 1.7; color: #d3e4f3; }
     .para { font-size: 15px; line-height: 1.75; color: #c7d8e6; }
     .hrx { height: 1px; background: linear-gradient(90deg, transparent, rgba(56,189,248,.35), rgba(34,197,94,.35), transparent); border: 0; }
-
-    /* scroll reveal */
-    .reveal { opacity: 0; transform: translateY(10px); transition: opacity .45s ease, transform .45s ease; }
-    .reveal.in { opacity: 1; transform: translateY(0); }
-    @media (prefers-reduced-motion: reduce){ .reveal, .reveal.in { opacity: 1; transform: none; transition: none; } }
-
-    /* home layout */
-    .homeGrid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 18px; align-items: center; }
-    @media (max-width: 900px) { .homeGrid { grid-template-columns: 1fr; gap: 14px; } }
-    .title { font-size: clamp(24px, 5.5vw, 42px); line-height: 1.12; font-weight: 700; letter-spacing: .2px; position: relative; }
-    .title::after { content: ""; position: absolute; left: 0; bottom: -8px; height: 3px; width: 120px; background: linear-gradient(90deg, var(--accentA), var(--accentB)); border-radius: 3px; opacity: .22; }
-    .tag { color: var(--muted); font-size: 15px; margin-top: 6px; }
-    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
-    .chip { padding: 8px 12px; border-radius: 999px; border: 1px solid var(--line); background: #0c141d; color: #cfe0ee; font-weight: 600; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
-    .cta { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
-    .btn { padding: 14px 16px; border-radius: 14px; border: 1px solid var(--line); background: #0f1924; color: var(--ink); font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; transition: transform .12s ease, box-shadow .2s ease, background .2s ease; }
-    .btn:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(0,0,0,.35); background: #102132; }
-    .btn.primary { background: linear-gradient(135deg, var(--accentA), var(--accentB)); color: #082012; border: 0; box-shadow: 0 8px 26px rgba(56,189,248,.2), 0 10px 26px rgba(34,197,94,.15); }
-    .btn.primary:hover { box-shadow: 0 12px 34px rgba(56,189,248,.28), 0 12px 32px rgba(34,197,94,.22); }
-
-    /* hero flair */
-    .hero { overflow: hidden; }
-    .hero::before { content: ""; position: absolute; right: -20%; top: -40%; width: 70%; height: 140%; background: radial-gradient(50% 50% at 50% 50%, rgba(56,189,248,.12), transparent 60%); filter: blur(30px); pointer-events: none; }
-
-    /* 3d panel */
-    .stageWrap { position: relative; height: clamp(260px, 48vh, 520px); border-radius: 18px; border: 1px solid var(--line); background: #0b1520; overflow: hidden; touch-action: none; }
-    .stageWrap::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(40% 60% at 70% 30%, rgba(255,255,255,.04), transparent 60%); }
-    .hint { position: absolute; top: 10px; left: 10px; padding: 7px 12px; border-radius: 999px; background: rgba(56,189,248,.18); border: 1px solid rgba(56,189,248,.35); color: #bfeeff; font-weight: 700; font-size: 12px; }
-    canvas { display: block; width: 100%; height: 100%; }
-
-    /* badges and stats */
-    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-top: 12px; }
-    .stat { position: relative; padding: 12px; border-radius: 12px; background: #0b1520; border: 1px solid var(--line); display: grid; gap: 4px; overflow: hidden; }
-    .stat::after { content: ""; position: absolute; inset: 0; background: radial-gradient(60% 80% at 110% -20%, rgba(56,189,248,.10), transparent 60%); pointer-events: none; }
+    /* Chip group */
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .chip {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #0c141d;
+      color: #cfe0ee;
+      font-weight: 600;
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    /* Buttons */
+    .cta { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+    .btn {
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #0f1924;
+      color: var(--ink);
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      transition: transform .12s ease, box-shadow .2s ease, background .2s ease;
+      display: inline-block;
+    }
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(0,0,0,.35), 0 8px 26px rgba(56,189,248,.22), 0 8px 22px rgba(34,197,94,.18);
+      background: #102132;
+    }
+    .btn.primary {
+      background: linear-gradient(135deg, var(--accentA), var(--accentB));
+      color: #082012;
+      border: 0;
+      box-shadow: 0 8px 26px rgba(56,189,248,.2), 0 10px 26px rgba(34,197,94,.15);
+    }
+    .btn.primary:hover {
+      box-shadow: 0 12px 34px rgba(56,189,248,.28), 0 12px 32px rgba(34,197,94,.22);
+    }
+    /* Hero container */
+    .homeGrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: center;
+    }
+    @media (max-width: 900px) {
+      .homeGrid { grid-template-columns: 1fr; gap: 24px; }
+    }
+    /* Stats badges */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .stat {
+      position: relative;
+      padding: 14px;
+      border-radius: 12px;
+      background: #0b1520;
+      border: 1px solid var(--line);
+      display: grid;
+      gap: 4px;
+      overflow: hidden;
+    }
+    .stat::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(60% 80% at 110% -20%, rgba(56,189,248,.10), transparent 60%);
+      pointer-events: none;
+    }
     .num { font-weight: 700; font-size: 17px; }
     .label { color: var(--muted); font-size: 13px; }
-
-    /* product page */
-    .grid2 { display: grid; grid-template-columns: 1.1fr .9fr; gap: 14px; align-items: start; }
-    @media (max-width: 980px) { .grid2 { grid-template-columns: 1fr; } }
-    .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-    @media (max-width: 900px) { .grid3 { grid-template-columns: 1fr; } }
-    .feature { padding: 16px; border-radius: 16px; background: #0b1520; border: 1px solid var(--line); display: grid; gap: 10px; transition: border-color .2s ease, transform .12s ease; }
-    .feature:hover { border-color: #2a425b; transform: translateY(-1px); }
-    .feature h3 { margin: 0; font-size: 17px; font-weight: 700; }
-    .feature p { margin: 0; color: var(--muted); font-size: 15px; }
+    /* Product page grids */
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+    @media (max-width: 980px) {
+      .grid2 { grid-template-columns: 1fr; }
+    }
+    .grid3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 900px) {
+      .grid3 { grid-template-columns: 1fr; }
+    }
+    .feature {
+      padding: 18px;
+      border-radius: 16px;
+      background: #0b1520;
+      border: 1px solid var(--line);
+      display: grid;
+      gap: 12px;
+      transition: border-color .2s ease, transform .12s ease;
+    }
+    .feature:hover {
+      border-color: #2a425b;
+      transform: translateY(-2px);
+    }
+    .feature h3 {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 700;
+    }
+    .feature p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.6;
+    }
     .specs { display: grid; gap: 8px; }
-    .specrow { display: grid; grid-template-columns: 160px 1fr; gap: 8px; padding: 10px 12px; border: 1px solid var(--line); background: #0b1520; border-radius: 12px; }
+    .specrow {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 8px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      background: #0b1520;
+      border-radius: 12px;
+    }
     .key { color: #c4d6e4; font-weight: 700; }
-
-    .steps { display: grid; gap: 10px; }
-    .step { display: grid; grid-template-columns: 32px 1fr; gap: 10px; align-items: start; }
-    .bubble { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--accentA), var(--accentB)); color: #062013; display: grid; place-items: center; font-weight: 800; }
-
-    .callout { border: 1px solid #2a425b; background: #0c1723; border-radius: 12px; padding: 12px; color: #cfe0ee; }
-
-    /* team page */
-    .teamGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-    @media (max-width: 1000px) { .teamGrid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 560px) { .teamGrid { grid-template-columns: 1fr; } }
-    .person { padding: 16px; border-radius: 16px; background: #0b1520; border: 1px solid var(--line); display: grid; gap: 10px; align-content: start; transition: transform .12s ease, border-color .2s ease; }
-    .person:hover { transform: translateY(-2px); border-color: #2a425b; }
-    .avatar { width: 72px; height: 72px; border-radius: 18px; background: linear-gradient(135deg, var(--accentA), var(--accentB)); display: grid; place-items: center; font-weight: 800; color: #06220f; font-size: 26px; }
+    .steps { display: grid; gap: 12px; }
+    .step { display: grid; grid-template-columns: 32px 1fr; gap: 12px; align-items: start; }
+    .bubble {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accentA), var(--accentB));
+      color: #062013;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+    }
+    .callout {
+      border: 1px solid #2a425b;
+      background: #0c1723;
+      border-radius: 12px;
+      padding: 14px;
+      color: #cfe0ee;
+      font-size: 15px;
+    }
+    /* Team page */
+    .teamGrid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 1000px) {
+      .teamGrid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .teamGrid { grid-template-columns: 1fr; }
+    }
+    .person {
+      padding: 18px;
+      border-radius: 16px;
+      background: #0b1520;
+      border: 1px solid var(--line);
+      display: grid;
+      gap: 10px;
+      align-content: start;
+      transition: transform .12s ease, border-color .2s ease;
+    }
+    .person:hover {
+      transform: translateY(-2px);
+      border-color: #2a425b;
+    }
+    .avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--accentA), var(--accentB));
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      color: #06220f;
+      font-size: 26px;
+    }
     .role { color: var(--muted); font-size: 14px; }
-    .pill { padding: 7px 12px; border-radius: 999px; border: 1px solid var(--line); background: #0f1924; color: #cfe0ee; font-size: 12px; width: fit-content; }
-
-    /* faq and pricing */
-    .qa { display: grid; gap: 10px; }
+    .pill {
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #0f1924;
+      color: #cfe0ee;
+      font-size: 12px;
+      width: fit-content;
+    }
+    /* FAQ & Pricing */
+    .qa { display: grid; gap: 14px; }
     .qa .q { font-weight: 700; }
-    .price { display: grid; grid-template-columns: 1fr; gap: 12px; }
-    @media (min-width: 700px) { .price { grid-template-columns: repeat(2, 1fr); } }
-    .plan { padding: 18px; border-radius: 16px; background: #0b1520; border: 1px solid var(--line); display: grid; gap: 10px; }
+    .price {
+      display: grid;
+      gap: 16px;
+    }
+    @media (min-width: 700px) {
+      .price { grid-template-columns: repeat(2, 1fr); }
+    }
+    .plan {
+      padding: 18px;
+      border-radius: 16px;
+      background: #0b1520;
+      border: 1px solid var(--line);
+      display: grid;
+      gap: 12px;
+    }
     .plan .money { font-size: 26px; font-weight: 700; }
-
-    .foot { color: var(--muted); font-size: 13px; text-align: center; padding: 16px 0 8px; }
-
-    /* dynamic ocean background */
-    .bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
+    /* Contact page */
+    .foot {
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+      padding: 20px 0 10px;
+    }
+    /* Hero embed container for graphs or images */
+    .stageEmbed,
+    .stageImg {
+      position: relative;
+      height: clamp(260px, 48vh, 520px);
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      overflow: hidden;
+      background: #0b1520;
+    }
+    .stageImg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .stageEmbed iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    /* Background animation */
+    .bg {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+    }
     .bg::before,
-    .bg::after { content: ""; position: absolute; inset: -20%; filter: blur(40px); opacity: .16; }
+    .bg::after {
+      content: "";
+      position: absolute;
+      inset: -20%;
+      filter: blur(40px);
+      opacity: .16;
+    }
     .bg::before {
       background:
         radial-gradient(50% 60% at 20% 10%, rgba(56,189,248,.60), transparent 60%),
@@ -163,33 +448,35 @@
     }
     @keyframes swirl { to { transform: rotate(360deg); } }
     @keyframes floaty { from { transform: translateY(-10px); } to { transform: translateY(10px); } }
-    @media (prefers-reduced-motion: reduce){ .bg::before, .bg::after { animation: none; } }
-
-    /* tiny floating bubbles for flair */
-    .bg-dots { position: absolute; inset: 0; pointer-events: none; background-image:
-      radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,.06), transparent 40%),
-      radial-gradient(2px 2px at 70% 60%, rgba(255,255,255,.06), transparent 40%),
-      radial-gradient(2px 2px at 40% 80%, rgba(255,255,255,.05), transparent 40%),
-      radial-gradient(1.5px 1.5px at 80% 40%, rgba(255,255,255,.05), transparent 40%);
-      animation: drift 50s linear infinite; }
+    .bg-dots {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,.06), transparent 40%),
+        radial-gradient(2px 2px at 70% 60%, rgba(255,255,255,.06), transparent 40%),
+        radial-gradient(2px 2px at 40% 80%, rgba(255,255,255,.05), transparent 40%),
+        radial-gradient(1.5px 1.5px at 80% 40%, rgba(255,255,255,.05), transparent 40%);
+      animation: drift 50s linear infinite;
+    }
     @keyframes drift { from { transform: translateY(0); } to { transform: translateY(-10%); } }
-    @media (prefers-reduced-motion: reduce){ .bg-dots { animation: none; } }
-
-    @media (pointer: coarse){
+    @media (prefers-reduced-motion: reduce) {
+      .bg::before, .bg::after, .bg-dots { animation: none; }
+    }
+    @media (pointer: coarse) {
       .tab { padding: 13px 18px; }
       .btn { padding: 16px 18px; }
     }
-
     a { color: inherit; text-decoration: none; }
   </style>
 </head>
 <body>
   <div class="bg" aria-hidden="true"><div class="bg-dots"></div></div>
   <div class="wrap">
-    <!-- nav -->
+    <!-- Navigation bar -->
     <div class="nav">
       <div class="brand"><div class="logo"></div><div>SmartFish Monitor</div></div>
-      <div class="tabs" role="tablist" aria-label="Main">
+      <div class="tabs" role="tablist" aria-label="Main navigation">
         <button class="tab active" data-page="home" role="tab" aria-selected="true">Home</button>
         <button class="tab" data-page="product" role="tab" aria-selected="false">Product</button>
         <button class="tab" data-page="team" role="tab" aria-selected="false">Team</button>
@@ -199,11 +486,10 @@
       </div>
       <div></div>
     </div>
-
-    <!-- home page -->
+    <!-- Home page -->
     <section id="page-home" class="page active">
       <article class="card hero reveal">
-        <div class="inner">
+        <div class="inner homeContainer">
           <div class="homeGrid">
             <div>
               <div class="title">Using ultrasonic sensors, our product measures fish in the capture tank and emails the weight</div>
@@ -211,7 +497,7 @@
               <p class="lede">SmartFish Monitor shows how much fish is in the capture tank, in real time. The design is calm, the numbers are clear, decisions are faster. You see progress toward the quota and you stay in control.</p>
               <p class="para">The system is built to be straightforward. The controller reads the level, converts it to volume, then converts it to kilograms. You get a clean view and an email when you approach your limit.</p>
               <hr class="hrx" />
-              <div class="chips" style="margin-top:14px;">
+              <div class="chips">
                 <span class="chip">Real time data</span>
                 <span class="chip">Quota information</span>
                 <span class="chip">Daily, monthly, yearly totals</span>
@@ -228,16 +514,14 @@
                 <a class="btn" href="#product" onclick="location.hash='product'">Learn about the product</a>
               </div>
             </div>
-            <div class="stageWrap reveal">
-              <div class="hint">Drag to rotate</div>
-              <canvas id="stage" aria-label="Interactive 3D model"></canvas>
+            <div class="stageEmbed reveal">
+              <iframe src="http://localhost:3000/d/deyxnvx9ik5q8a/fishy?orgId=1&amp;from=2025-09-23T15:18:50.198Z&amp;to=2025-09-23T17:18:50.198Z&amp;timezone=browser&amp;refresh=auto&amp;viewPanel=panel-1&amp;theme=dark" aria-label="Fish weight chart"></iframe>
             </div>
           </div>
         </div>
       </article>
     </section>
-
-    <!-- product page -->
+    <!-- Product page -->
     <section id="page-product" class="page">
       <article class="card reveal">
         <div class="inner">
@@ -274,14 +558,14 @@
             <div>
               <div class="feature reveal">
                 <h3>Hardware specs</h3>
-                <div class="specs" style="margin-top:8px;">
+                <div class="specs">
                   <div class="specrow"><div class="key">Controller</div><div>Hurdell Delta</div></div>
                   <div class="specrow"><div class="key">Sensors</div><div>Ultrasonic, high frequency</div></div>
                   <div class="specrow"><div class="key">Accuracy</div><div>0.002 m, depth resolution</div></div>
                   <div class="specrow"><div class="key">Power</div><div>Battery powered</div></div>
                   <div class="specrow"><div class="key">Enclosure and temp</div><div>0 to 25 C, demo not water tight</div></div>
                 </div>
-                <p class="para">The demo enclosure is intended for bench tests and indoor use. Field use requires a sealed housing, this is part of future work.</p>
+                <p class="para">The demo enclosure is intended for bench tests and indoor use. Field use requires a sealed housing; this is part of future work.</p>
               </div>
               <div class="feature reveal">
                 <h3>Quotas and alerts</h3>
@@ -306,8 +590,7 @@
         </div>
       </article>
     </section>
-
-    <!-- team page -->
+    <!-- Team page -->
     <section id="page-team" class="page">
       <article class="card reveal">
         <div class="inner">
@@ -346,8 +629,7 @@
         </div>
       </article>
     </section>
-
-    <!-- faq page -->
+    <!-- FAQ page -->
     <section id="page-faq" class="page">
       <article class="card reveal">
         <div class="inner">
@@ -359,13 +641,12 @@
             <div class="feature reveal"><div class="q">Who is it for</div><p>Commercial fishermen and government users who need clear quota tracking and simple summaries.</p></div>
             <div class="feature reveal"><div class="q">What is the implementation like</div><p>Implementation is a focus area. The goal is simple setup and clear calibration steps.</p></div>
             <div class="feature reveal"><div class="q">What information is stored</div><p>Configuration is local, emails are sent through Google, customer information is not collected at this time.</p></div>
-            <div class="feature reveal"><div class="q">What happens when the quota is exceeded</div><p>An email is sent, next actions depend on your process and rules.</p></div>
+            <div class="feature reveal"><div class="q">What happens when the quota is exceeded</div><p>An email is sent; next actions depend on your process and rules.</p></div>
           </div>
         </div>
       </article>
     </section>
-
-    <!-- pricing page -->
+    <!-- Pricing page -->
     <section id="page-pricing" class="page">
       <article class="card reveal">
         <div class="inner">
@@ -386,8 +667,7 @@
         </div>
       </article>
     </section>
-
-    <!-- contact page -->
+    <!-- Contact page -->
     <section id="page-contact" class="page">
       <article class="card reveal">
         <div class="inner">
@@ -405,13 +685,13 @@
         </div>
       </article>
     </section>
-
-    <div class="foot">SmartFish, a clean public showcase. Use tabs to switch pages. You can drop this html into any static host.</div>
+    <div class="foot">SmartFish, a clean public showcase. Use tabs to switch pages. You can drop this HTML into any static host.</div>
   </div>
-
-  <!-- scripts -->
+  <!-- Scripts -->
   <script>
-    // simple tabs and hash routing
+    // Simple hash‑based navigation. Clicking a tab updates the location hash
+    // and this function activates the corresponding page. The active state
+    // on the buttons updates for assistive technologies via aria‑selected.
     const tabs = document.querySelectorAll('.tab');
     const pages = {
       home: document.getElementById('page-home'),
@@ -421,142 +701,33 @@
       pricing: document.getElementById('page-pricing'),
       contact: document.getElementById('page-contact')
     };
-    function show(name){ Object.values(pages).forEach(p=>p.classList.remove('active')); pages[name].classList.add('active'); tabs.forEach(t=>{ t.classList.toggle('active', t.dataset.page===name); t.setAttribute('aria-selected', t.dataset.page===name ? 'true' : 'false'); }); }
-    function fromHash(){ const n = location.hash.replace('#','') || 'home'; if(pages[n]) show(n); }
-    tabs.forEach(t=> t.addEventListener('click',()=>{ location.hash = t.dataset.page; }));
-    window.addEventListener('hashchange', fromHash); fromHash();
-
-    // scroll reveal
-    const io = new IntersectionObserver((entries)=>{
-      for(const e of entries){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }
-    }, { threshold: .12 });
-    document.querySelectorAll('.reveal').forEach(el=> io.observe(el));
-  </script>
-  <script>
-    // self tests, quick sanity checks in console
-    (function(){
-      const ok = [];
-      const err = [];
-      function must(cond, msg){ if(cond) ok.push(msg); else err.push(msg); }
-      ['home','product','team','faq','pricing','contact'].forEach(id=>{
-        must(document.querySelector(`.tabs .tab[data-page="${id}"]`), id+' tab');
-        must(document.getElementById('page-'+id), id+' page');
+    function show(pageName) {
+      Object.values(pages).forEach(p => p.classList.remove('active'));
+      pages[pageName].classList.add('active');
+      tabs.forEach(t => {
+        const on = t.dataset.page === pageName;
+        t.classList.toggle('active', on);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
       });
-      must(!document.getElementById('page-notes'), 'notes page removed');
-      const res = { ok, err };
-      if(err.length){ console.warn('Self tests failed', res); }
-      else { console.log('Self tests passed', res); }
-    })();
-  </script>
-  <script type="module">
-    // three.js is initialized lazily for mobile perf, with safe fallbacks
-    const stage = document.getElementById('stage');
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let started = false;
-
-    const showFallback = (msg = '3D preview unavailable, check connection') => {
-      if (stage.dataset.fallback) return;
-      stage.dataset.fallback = '1';
-      const note = document.createElement('div');
-      note.className = 'hint';
-      note.textContent = msg;
-      note.style.left = '12px';
-      note.style.top = '12px';
-      stage.parentElement.appendChild(note);
-    };
-
-    const start3D = async () => {
-      if (started) return; started = true;
-      try {
-        const THREE = await import('https://unpkg.com/three@0.160.0/build/three.module.js');
-        const canvas = stage;
-        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(46, 2, 0.1, 100);
-        camera.position.set(0, 0.4, 3.6);
-
-        const light = new THREE.DirectionalLight(0xffffff, 1.2); light.position.set(2, 3, 4); scene.add(light);
-        const amb = new THREE.AmbientLight(0x6688aa, 0.6); scene.add(amb);
-
-        // gradient env
-        const grad = new THREE.Mesh(
-          new THREE.SphereGeometry(30, 24, 12),
-          new THREE.ShaderMaterial({
-            side: THREE.BackSide,
-            uniforms: { c1: { value: new THREE.Color('#0b1520') }, c2: { value: new THREE.Color('#08121a') } },
-            vertexShader: `varying vec3 vPos; void main(){ vPos = position; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
-            fragmentShader: `varying vec3 vPos; uniform vec3 c1; uniform vec3 c2; void main(){ float h = normalize(vPos).y*0.5+0.5; gl_FragColor = vec4(mix(c2,c1,h),1.0); }`
-          })
-        );
-        scene.add(grad);
-
-        // lower geometry detail on small screens
-        const small = window.matchMedia('(max-width: 520px)').matches || window.matchMedia('(pointer: coarse)').matches;
-        const tkSeg = small ? 100 : 160;
-        const tkTube = small ? 18 : 24;
-
-        const group = new THREE.Group(); scene.add(group);
-        const matA = new THREE.MeshStandardMaterial({ color: '#38bdf8', metalness: .4, roughness: .2 });
-        const matB = new THREE.MeshStandardMaterial({ color: '#22c55e', metalness: .4, roughness: .25 });
-
-        const body = new THREE.Mesh(new THREE.TorusKnotGeometry(0.6, 0.18, tkSeg, tkTube, 1, 3), matA);
-        body.rotation.x = Math.PI*0.12; group.add(body);
-        const tail = new THREE.Mesh(new THREE.ConeGeometry(0.35, 0.9, 3), matB); tail.position.x = 1.1; tail.rotation.z = Math.PI; group.add(tail);
-        const fin1 = new THREE.Mesh(new THREE.ConeGeometry(0.14, 0.36, 3), matB); fin1.position.set(0, 0.45, 0); fin1.rotation.x = Math.PI; group.add(fin1);
-        const fin2 = new THREE.Mesh(new THREE.ConeGeometry(0.14, 0.36, 3), matB); fin2.position.set(0, -0.45, 0); group.add(fin2);
-        const ring = new THREE.Mesh(new THREE.TorusGeometry(1.45, 0.03, 12, 100), new THREE.MeshBasicMaterial({ color: '#1e2d3b' }));
-        group.add(ring);
-
-        function resize(){
-          const r = canvas.getBoundingClientRect();
-          const dpr = Math.min(window.devicePixelRatio||1, small ? 1.5 : 2);
-          renderer.setPixelRatio(dpr);
-          renderer.setSize(r.width, r.height, false);
-          camera.aspect = r.width / Math.max(1, r.height);
-          camera.updateProjectionMatrix();
+    }
+    function fromHash() {
+      const name = location.hash.replace('#', '') || 'home';
+      if (pages[name]) show(name);
+    }
+    tabs.forEach(t => t.addEventListener('click', () => { location.hash = t.dataset.page; }));
+    window.addEventListener('hashchange', fromHash);
+    fromHash();
+    // Intersection observer for fade‑in reveals. Elements marked with
+    // class="reveal" will animate in when they enter the viewport.
+    const io = new IntersectionObserver(entries => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
         }
-        window.addEventListener('resize', resize); setTimeout(resize, 0);
-
-        let isDown = false, sx = 0, sy = 0, rx = 0, ry = 0;
-        canvas.addEventListener('pointerdown', e=>{ isDown = true; sx = e.clientX; sy = e.clientY; canvas.setPointerCapture(e.pointerId); });
-        canvas.addEventListener('pointerup', e=>{ isDown = false; canvas.releasePointerCapture(e.pointerId); });
-        canvas.addEventListener('pointercancel', ()=>{ isDown = false; });
-        canvas.addEventListener('pointermove', e=>{
-          if(!isDown) return; const dx = e.clientX - sx; const dy = e.clientY - sy; ry += dx*0.005; rx += dy*0.005; sx = e.clientX; sy = e.clientY; });
-
-        let t = 0; let running = true;
-        function tick(){ if(!running) return; t += 0.01; group.rotation.y = ry + Math.sin(t)*0.05; group.rotation.x = rx + Math.cos(t*0.8)*0.03; body.rotation.y += 0.01; tail.rotation.y = Math.sin(t*2)*0.3; renderer.render(scene, camera); requestAnimationFrame(tick); }
-        if(!prefersReduced){ tick(); }
-
-        // pause 3D when leaving Home
-        window.addEventListener('hashchange', ()=>{
-          const onHome = location.hash.replace('#','') === 'home' || location.hash === '';
-          running = onHome;
-          if(running && !prefersReduced){ requestAnimationFrame(tick); }
-        });
-      } catch (e) {
-        console.warn('3D init failed', e);
-        showFallback();
       }
-    };
-
-    const maybeStart3D = () => {
-      if (started) return;
-      const onHome = location.hash.replace('#','') === 'home' || location.hash === '';
-      const rect = stage.getBoundingClientRect();
-      const visible = rect.top < innerHeight && rect.bottom > 0 && getComputedStyle(stage).display !== 'none';
-      if (onHome && visible) start3D();
-    };
-
-    // start when visible in viewport
-    const stageIO = new IntersectionObserver((entries)=>{
-      for(const e of entries){ if(e.isIntersecting){ start3D(); stageIO.unobserve(e.target); } }
-    }, { rootMargin: '120px' });
-    stageIO.observe(stage);
-
-    // start on Home navigation or after load
-    window.addEventListener('hashchange', ()=> setTimeout(maybeStart3D, 60));
-    window.addEventListener('load', ()=> setTimeout(maybeStart3D, 120));
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
   </script>
 </body>
 </html>
