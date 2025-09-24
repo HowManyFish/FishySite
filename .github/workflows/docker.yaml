@@ -69,7 +69,7 @@ jobs:
             type=ref,enable=true,priority=600,prefix=pr-,suffix=,event=pr
 
       - name: Build and push
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v6
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
