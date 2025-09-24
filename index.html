@@ -51,7 +51,7 @@
       top: calc(env(safe-area-inset-top) + 6px);
       z-index: 50;
       display: grid;
-      grid-template-columns: auto 1fr auto;
+      grid-template-columns: auto 1fr;
       gap: 12px;
       align-items: center;
       background: linear-gradient(180deg, rgba(6,11,17,.65), rgba(6,11,17,.18));
@@ -389,6 +389,9 @@
       gap: 12px;
     }
     .plan .money { font-size: 26px; font-weight: 700; }
+    /* Contact page spacing */
+    #page-contact .grid3 { margin-top: 20px; }
+    #page-contact .feature:last-child { margin-top: 20px; }
     /* Contact page */
     .foot {
       color: var(--muted);
@@ -484,7 +487,7 @@
         <button class="tab" data-page="pricing" role="tab" aria-selected="false">Pricing</button>
         <button class="tab" data-page="contact" role="tab" aria-selected="false">Contact</button>
       </div>
-      <div></div>
+      <!-- removed empty spacer column -->
     </div>
     <!-- Home page -->
     <section id="page-home" class="page active">
@@ -515,7 +518,7 @@
               </div>
             </div>
             <div class="stageEmbed reveal">
-              <iframe src="http://localhost:3000/d/deyxnvx9ik5q8a/fishy?orgId=1&amp;from=2025-09-23T15:18:50.198Z&amp;to=2025-09-23T17:18:50.198Z&amp;timezone=browser&amp;refresh=auto&amp;viewPanel=panel-1&amp;theme=dark" aria-label="Fish weight chart"></iframe>
+              <iframe src="https://graf.nzdev.org/public-dashboards/689b37a5704842fabc0f6a53c428c4ea" aria-label="Fish weight chart"></iframe>
             </div>
           </div>
         </div>
@@ -535,7 +538,7 @@
                 <p class="para">You see current levels, recent change, and totals for the period you care about. The interface avoids clutter, it keeps the focus on values that help you act.</p>
               </div>
               <div class="grid3">
-                <div class="feature reveal"><h3>Quota information</h3><p>Track progress against the target, stay within limits.</p></div>
+                <div class="feature reveal"><h3>Quota information</h3><p>Track progress against the target, stay within limits. A quota is your allowable catch weight per day, month or year.</p></div>
                 <div class="feature reveal"><h3>Totals by period</h3><p>Fish caught per day, month, year, kg.</p></div>
                 <div class="feature reveal"><h3>Real time</h3><p>Fresh readings, clear state, quick checks on deck.</p></div>
               </div>
@@ -569,7 +572,7 @@
               </div>
               <div class="feature reveal">
                 <h3>Quotas and alerts</h3>
-                <p>Customers can set quotas for day, month, year, kilograms. Warnings are sent as emails and LED when 75 percent of quota is met. When full quota is met, an email is sent.</p>
+                <p>Customers can set quotas for day, month, year, kilograms. A quota is the catch weight limit you choose or that is defined by regulators. Warnings are sent as emails and LED when 75 percent of your quota is met. When the full quota is met, an email is sent.</p>
                 <p class="para">Email is the primary channel for notices. The LED on the device gives a quick local hint about your state.</p>
               </div>
               <div class="feature reveal">
@@ -673,12 +676,12 @@
         <div class="inner">
           <div class="title">Contact</div>
           <p class="lede">Send a short message with your vessel name and a line about your setup. We will reply with next steps and a simple checklist.</p>
-          <div class="grid3" style="margin-top:10px;">
+          <div class="grid3">
             <div class="feature reveal"><h3>Email</h3><p><a href="mailto:joehurndell1@gmail.com">joehurndell1@gmail.com</a></p></div>
             <div class="feature reveal"><h3>Location</h3><p>Christchurch, New Zealand</p></div>
             <div class="feature reveal"><h3>Privacy</h3><p>We do not collect any customer information at this time.</p></div>
           </div>
-          <div class="feature reveal" style="margin-top:14px;">
+          <div class="feature reveal">
             <h3>Team motto</h3>
             <p>Our team motto is, if it is not optimal and efficient, it is a terrible solution.</p>
           </div>
