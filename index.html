@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -226,6 +224,13 @@
       box-shadow: 0 12px 34px rgba(56,189,248,.28), 0 12px 32px rgba(34,197,94,.22);
     }
 
+    /* When a cta contains only a single item, collapse to one column so it
+       doesn’t leave an empty second column. This class can be applied on a
+       wrapper alongside .cta */
+    .cta-single {
+      grid-template-columns: 1fr;
+    }
+
     /* mobile menu toggle (hamburger) */
     .menu-toggle {
       display: none;
@@ -275,6 +280,11 @@
       cursor: pointer;
     }
     .mobileNav button:hover { background: #132235; }
+    /* highlight the active page in the mobile dropdown */
+    .mobileNav button.active {
+      background: linear-gradient(135deg, var(--accentA), var(--accentB));
+      color: #062013;
+    }
 
     /* wrapper for mobile menu toggle and overlay */
     .mobileWrap {
@@ -446,6 +456,13 @@
     #page-contact .grid3 { margin-top: 20px; }
     #page-contact .feature:last-child { margin-top: 20px; }
 
+    /* Ensure contact cards align evenly in desktop view by stretching them to the
+       same height. Without this rule the privacy card can appear lower than
+       the others on some screens. */
+    #page-contact .grid3 .feature {
+      align-self: stretch;
+    }
+
     /* Hero embed container */
     .stageEmbed,
     .stageImg {
@@ -524,6 +541,7 @@
       .menu-toggle { display: block; }
     }
     a { color: inherit; text-decoration: none; }
+
   </style>
 </head>
 <body>
@@ -621,7 +639,7 @@
                 <h3>How it works, three steps</h3>
                 <div class="steps">
                   <div class="step"><div class="bubble">1</div><div>Measure displacement of water in the capture tank, ultrasonic sensor reads level change.</div></div>
-                  <div the="step"><div class="bubble">2</div><div>Calculate fish weight from level change, tank area and water density are used for conversion.</div></div>
+                  <div class="step"><div class="bubble">2</div><div>Calculate fish weight from level change, tank area and water density are used for conversion.</div></div>
                   <div class="step"><div class="bubble">3</div><div>Send information to customers, email notifications include current totals and quota status.</div></div>
                 </div>
                 <p class="para">Accuracy depends on calibration. Enter the tank geometry and the correct water density for your conditions, then verify with a known load.</p>
@@ -640,8 +658,8 @@
                   <div class="specrow"><div class="key">Controller</div><div>Hurdell Delta</div></div>
                   <div class="specrow"><div class="key">Sensors</div><div>Ultrasonic, high frequency</div></div>
                   <div class="specrow"><div class="key">Accuracy</div><div>0.002 m, depth resolution</div></div>
-                  <div class="specrow"><div the="key">Power</div><div>Battery powered</div></div>
-                  <div class="specrow"><div the="key">Enclosure and temp</div><div>0 to 25 C, demo not water tight</div></div>
+                  <div class="specrow"><div class="key">Power</div><div>Battery powered</div></div>
+                  <div class="specrow"><div class="key">Enclosure and temp</div><div>0 to 25 C, demo not water tight</div></div>
                 </div>
                 <p class="para">The demo enclosure is intended for bench tests and indoor use. Field use requires a sealed housing, this is part of future work.</p>
               </div>
@@ -664,6 +682,9 @@
                 </ul>
               </div>
             </div>
+          </div>
+          <div class="cta cta-single">
+            <a class="btn primary" href="https://graf.nzdev.org/" target="_blank" rel="noopener">See our dashboard</a>
           </div>
         </div>
       </article>
@@ -799,6 +820,15 @@
         t.classList.toggle('active', on);
         t.setAttribute('aria-selected', on ? 'true' : 'false');
       });
+      // Update mobile buttons to reflect the active page
+      const mobileButtons = document.querySelectorAll('.mobileNav .mobileTab');
+      mobileButtons.forEach(btn => {
+        const onMobile = btn.dataset.page === pageName;
+        btn.classList.toggle('active', onMobile);
+        btn.setAttribute('aria-selected', onMobile ? 'true' : 'false');
+      });
+
+      // The mobile current page label has been removed. We keep the highlight in the dropdown.
     }
     function fromHash() {
       const name = location.hash.replace('#', '') || 'home';
