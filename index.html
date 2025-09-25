@@ -13,7 +13,7 @@
     /*
       The original design shipped with uneven margins, inline styles and an embedded
       WebGL model. This revision focuses on consistency and performance while
-      retaining the moody deep‑sea aesthetic. Utility classes replace
+      retaining the moody deep sea aesthetic. Utility classes replace
       scattered inline styles, responsive grids adapt across breakpoints and
       the 3D canvas has been swapped for a static hero illustration.
     */
@@ -95,18 +95,11 @@
       -webkit-overflow-scrolling: touch;
       scroll-snap-type: x mandatory;
       mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
-      /* enable visible horizontal scrollbar */
-      scrollbar-width: thin; /* Firefox */
+      scrollbar-width: thin;
       scrollbar-color: var(--accentA) transparent;
     }
-
-    /* Style the custom horizontal scrollbar for WebKit browsers */
-    .tabs::-webkit-scrollbar {
-      height: 6px;
-    }
-    .tabs::-webkit-scrollbar-track {
-      background: transparent;
-    }
+    .tabs::-webkit-scrollbar { height: 6px; }
+    .tabs::-webkit-scrollbar-track { background: transparent; }
     .tabs::-webkit-scrollbar-thumb {
       background: linear-gradient(135deg, var(--accentA), var(--accentB));
       border-radius: 3px;
@@ -173,6 +166,7 @@
       line-height: 1.2;
       font-weight: 700;
       position: relative;
+      margin: 0;
     }
     .title::after {
       content: "";
@@ -243,7 +237,6 @@
       line-height: 1;
       padding: 6px;
     }
-    /* simple hamburger icon using pseudo elements */
     .menu-toggle .bar {
       display: block;
       width: 24px;
@@ -267,9 +260,7 @@
       width: 180px;
       z-index: 100;
     }
-    .mobileNav.open {
-      display: block;
-    }
+    .mobileNav.open { display: block; }
     .mobileNav button {
       display: block;
       width: 100%;
@@ -283,9 +274,7 @@
       font-weight: 600;
       cursor: pointer;
     }
-    .mobileNav button:hover {
-      background: #132235;
-    }
+    .mobileNav button:hover { background: #132235; }
 
     /* wrapper for mobile menu toggle and overlay */
     .mobileWrap {
@@ -294,9 +283,8 @@
       justify-content: flex-end;
       align-items: center;
     }
-    @media (max-width: 600px) {
-      .mobileWrap { display: flex; }
-    }
+    @media (max-width: 600px) { .mobileWrap { display: flex; } }
+
     /* Hero container */
     .homeGrid {
       display: grid;
@@ -304,9 +292,8 @@
       gap: 32px;
       align-items: center;
     }
-    @media (max-width: 900px) {
-      .homeGrid { grid-template-columns: 1fr; gap: 24px; }
-    }
+    @media (max-width: 900px) { .homeGrid { grid-template-columns: 1fr; gap: 24px; } }
+
     /* Stats badges */
     .stats {
       display: grid;
@@ -333,6 +320,7 @@
     }
     .num { font-weight: 700; font-size: 17px; }
     .label { color: var(--muted); font-size: 13px; }
+
     /* Product page grids */
     .grid2 {
       display: grid;
@@ -340,17 +328,13 @@
       gap: 24px;
       align-items: start;
     }
-    @media (max-width: 980px) {
-      .grid2 { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 980px) { .grid2 { grid-template-columns: 1fr; } }
     .grid3 {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 16px;
     }
-    @media (max-width: 900px) {
-      .grid3 { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 900px) { .grid3 { grid-template-columns: 1fr; } }
     .feature {
       padding: 18px;
       border-radius: 16px;
@@ -360,21 +344,9 @@
       gap: 12px;
       transition: border-color .2s ease, transform .12s ease;
     }
-    .feature:hover {
-      border-color: #2a425b;
-      transform: translateY(-2px);
-    }
-    .feature h3 {
-      margin: 0;
-      font-size: 17px;
-      font-weight: 700;
-    }
-    .feature p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 15px;
-      line-height: 1.6;
-    }
+    .feature:hover { border-color: #2a425b; transform: translateY(-2px); }
+    .feature h3 { margin: 0; font-size: 17px; font-weight: 700; }
+    .feature p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.6; }
     .specs { display: grid; gap: 8px; }
     .specrow {
       display: grid;
@@ -406,18 +378,15 @@
       color: #cfe0ee;
       font-size: 15px;
     }
+
     /* Team page */
     .teamGrid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 16px;
     }
-    @media (max-width: 1000px) {
-      .teamGrid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 600px) {
-      .teamGrid { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 1000px) { .teamGrid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .teamGrid { grid-template-columns: 1fr; } }
     .person {
       padding: 18px;
       border-radius: 16px;
@@ -428,21 +397,25 @@
       align-content: start;
       transition: transform .12s ease, border-color .2s ease;
     }
-    .person:hover {
-      transform: translateY(-2px);
-      border-color: #2a425b;
-    }
+    .person:hover { transform: translateY(-2px); border-color: #2a425b; }
+
+    /* Avatar changed to photo container */
     .avatar {
       width: 72px;
       height: 72px;
       border-radius: 18px;
-      background: linear-gradient(135deg, var(--accentA), var(--accentB));
+      overflow: hidden;
+      background: #0e1a25;
       display: grid;
       place-items: center;
-      font-weight: 800;
-      color: #06220f;
-      font-size: 26px;
     }
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
     .role { color: var(--muted); font-size: 14px; }
     .pill {
       padding: 7px 12px;
@@ -453,16 +426,12 @@
       font-size: 12px;
       width: fit-content;
     }
-    /* FAQ & Pricing */
+
+    /* FAQ and Pricing */
     .qa { display: grid; gap: 14px; }
     .qa .q { font-weight: 700; }
-    .price {
-      display: grid;
-      gap: 16px;
-    }
-    @media (min-width: 700px) {
-      .price { grid-template-columns: repeat(2, 1fr); }
-    }
+    .price { display: grid; gap: 16px; }
+    @media (min-width: 700px) { .price { grid-template-columns: repeat(2, 1fr); } }
     .plan {
       padding: 18px;
       border-radius: 16px;
@@ -472,18 +441,12 @@
       gap: 12px;
     }
     .plan .money { font-size: 26px; font-weight: 700; }
+
     /* Contact page spacing */
     #page-contact .grid3 { margin-top: 20px; }
     #page-contact .feature:last-child { margin-top: 20px; }
 
-    /* Contact page */
-    .foot {
-      color: var(--muted);
-      font-size: 13px;
-      text-align: center;
-      padding: 20px 0 10px;
-    }
-    /* Hero embed container for graphs or images */
+    /* Hero embed container */
     .stageEmbed,
     .stageImg {
       position: relative;
@@ -500,20 +463,16 @@
       display: block;
     }
     .stageEmbed model-viewer {
-  width: 100%; /* Take up the full width */
-  height: 100%; /* Set a fixed height */
-  background-color: #222; /* Dark background for the model viewer */
-  border-radius: 8px; /* Rounded corners for the viewer */
-  border: 2px solid #333; /* Dark border */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7); /* Shadow around the viewer */
-}
-    /* Background animation */
-    .bg {
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      background-color: #222;
+      border-radius: 8px;
+      border: 2px solid #333;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
     }
+
+    /* Background animation */
+    .bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
     .bg::before,
     .bg::after {
       content: "";
@@ -550,6 +509,7 @@
       animation: drift 50s linear infinite;
     }
     @keyframes drift { from { transform: translateY(0); } to { transform: translateY(-10%); } }
+
     @media (prefers-reduced-motion: reduce) {
       .bg::before, .bg::after, .bg-dots { animation: none; }
     }
@@ -597,6 +557,7 @@
         </div>
       </div>
     </div>
+
     <!-- Home page -->
     <section id="page-home" class="page active">
       <article class="card hero reveal">
@@ -604,7 +565,6 @@
           <div class="homeGrid">
             <div>
               <div class="title">Using ultrasonic sensors, our product measures fish in the capture tank and emails the weight</div>
-              <div class="tag">The mass of fish captured per day, kg</div>
               <p class="lede">SmartFish Monitor shows how much fish is in the capture tank, in real time. The design is calm, the numbers are clear, decisions are faster. You see progress toward the quota and you stay in control.</p>
               <p class="para">The system is built to be straightforward. The controller reads the level, converts it to volume, then converts it to kilograms. You get a clean view and an email when you approach your limit.</p>
               <hr class="hrx" />
@@ -638,6 +598,7 @@
         </div>
       </article>
     </section>
+
     <!-- Product page -->
     <section id="page-product" class="page">
       <article class="card reveal">
@@ -660,7 +621,7 @@
                 <h3>How it works, three steps</h3>
                 <div class="steps">
                   <div class="step"><div class="bubble">1</div><div>Measure displacement of water in the capture tank, ultrasonic sensor reads level change.</div></div>
-                  <div class="step"><div class="bubble">2</div><div>Calculate fish weight from level change, tank area and water density are used for conversion.</div></div>
+                  <div the="step"><div class="bubble">2</div><div>Calculate fish weight from level change, tank area and water density are used for conversion.</div></div>
                   <div class="step"><div class="bubble">3</div><div>Send information to customers, email notifications include current totals and quota status.</div></div>
                 </div>
                 <p class="para">Accuracy depends on calibration. Enter the tank geometry and the correct water density for your conditions, then verify with a known load.</p>
@@ -679,10 +640,10 @@
                   <div class="specrow"><div class="key">Controller</div><div>Hurdell Delta</div></div>
                   <div class="specrow"><div class="key">Sensors</div><div>Ultrasonic, high frequency</div></div>
                   <div class="specrow"><div class="key">Accuracy</div><div>0.002 m, depth resolution</div></div>
-                  <div class="specrow"><div class="key">Power</div><div>Battery powered</div></div>
-                  <div class="specrow"><div class="key">Enclosure and temp</div><div>0 to 25 C, demo not water tight</div></div>
+                  <div class="specrow"><div the="key">Power</div><div>Battery powered</div></div>
+                  <div class="specrow"><div the="key">Enclosure and temp</div><div>0 to 25 C, demo not water tight</div></div>
                 </div>
-                <p class="para">The demo enclosure is intended for bench tests and indoor use. Field use requires a sealed housing; this is part of future work.</p>
+                <p class="para">The demo enclosure is intended for bench tests and indoor use. Field use requires a sealed housing, this is part of future work.</p>
               </div>
               <div class="feature reveal">
                 <h3>Quotas and alerts</h3>
@@ -707,6 +668,7 @@
         </div>
       </article>
     </section>
+
     <!-- Team page -->
     <section id="page-team" class="page">
       <article class="card reveal">
@@ -715,28 +677,36 @@
           <p class="lede">A compact group focused on signal quality and clear software. We move fast, we trim noise, we keep the interface simple for daily use.</p>
           <div class="teamGrid" style="margin-top:12px;">
             <div class="person reveal">
-              <div class="avatar">A</div>
+              <div class="avatar">
+                <img src="image/alex.jpg" alt="Alex">
+              </div>
               <div><strong>Alex</strong></div>
               <div class="role">Front end developer, head of advertisement</div>
               <div class="pill">UI and UX</div>
               <div class="pill">Brand</div>
             </div>
             <div class="person reveal">
-              <div class="avatar">J</div>
+              <div class="avatar">
+                <img src="image/joseph.jpg" alt="Joseph">
+              </div>
               <div><strong>Joseph</strong></div>
               <div class="role">Electrical systems operator</div>
               <div class="pill">Sensors</div>
               <div class="pill">Hardware</div>
             </div>
             <div class="person reveal">
-              <div class="avatar">H</div>
+              <div class="avatar">
+                <img src="image/harry.jpg" alt="Harry">
+              </div>
               <div><strong>Harry</strong></div>
               <div class="role">Head software chief</div>
               <div class="pill">APIs</div>
               <div class="pill">Data</div>
             </div>
             <div class="person reveal">
-              <div class="avatar">L</div>
+              <div class="avatar">
+                <img src="image/liam.jpg" alt="Liam">
+              </div>
               <div><strong>Liam</strong></div>
               <div class="role">Executive senior programmer</div>
               <div class="pill">Realtime</div>
@@ -746,6 +716,7 @@
         </div>
       </article>
     </section>
+
     <!-- FAQ page -->
     <section id="page-faq" class="page">
       <article class="card reveal">
@@ -758,11 +729,12 @@
             <div class="feature reveal"><div class="q">Who is it for</div><p>Commercial fishermen and government users who need clear quota tracking and simple summaries.</p></div>
             <div class="feature reveal"><div class="q">What is the implementation like</div><p>Implementation is a focus area. The goal is simple setup and clear calibration steps.</p></div>
             <div class="feature reveal"><div class="q">What information is stored</div><p>Configuration is local, emails are sent through Google, customer information is not collected at this time.</p></div>
-            <div class="feature reveal"><div class="q">What happens when the quota is exceeded</div><p>An email is sent; next actions depend on your process and rules.</p></div>
+            <div class="feature reveal"><div class="q">What happens when the quota is exceeded</div><p>An email is sent, next actions depend on your process and rules.</p></div>
           </div>
         </div>
       </article>
     </section>
+
     <!-- Pricing page -->
     <section id="page-pricing" class="page">
       <article class="card reveal">
@@ -784,6 +756,7 @@
         </div>
       </article>
     </section>
+
     <!-- Contact page -->
     <section id="page-contact" class="page">
       <article class="card reveal">
@@ -802,13 +775,13 @@
         </div>
       </article>
     </section>
-    <div class="foot">SmartFish, a clean public showcase. Use tabs to switch pages. You can drop this HTML into any static host.</div>
   </div>
+
   <!-- Scripts -->
   <script>
-    // Simple hash‑based navigation. Clicking a tab updates the location hash
+    // Simple hash based navigation. Clicking a tab updates the location hash
     // and this function activates the corresponding page. The active state
-    // on the buttons updates for assistive technologies via aria‑selected.
+    // on the buttons updates for assistive technologies via aria selected.
     const tabs = document.querySelectorAll('.tab');
     const pages = {
       home: document.getElementById('page-home'),
@@ -834,8 +807,8 @@
     tabs.forEach(t => t.addEventListener('click', () => { location.hash = t.dataset.page; }));
     window.addEventListener('hashchange', fromHash);
     fromHash();
-    // Intersection observer for fade‑in reveals. Elements marked with
-    // class="reveal" will animate in when they enter the viewport.
+
+    // Intersection observer for fade in reveals
     const io = new IntersectionObserver(entries => {
       for (const entry of entries) {
         if (entry.isIntersecting) {
@@ -846,9 +819,7 @@
     }, { threshold: 0.12 });
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-    // Mobile menu toggle logic. When the hamburger is clicked, show or hide
-    // the vertical menu. When a mobile nav item is selected, change the
-    // location hash and close the menu.
+    // Mobile menu toggle logic
     const menuToggleButton = document.querySelector('.menu-toggle');
     const mobileNav = document.querySelector('.mobileNav');
     if (menuToggleButton && mobileNav) {
@@ -863,7 +834,6 @@
         });
       });
     }
-
   </script>
 </body>
 </html>
