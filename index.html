@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#0a1521" />
   <meta name="color-scheme" content="dark light" />
-  <title>SmartFish Monitor, showcase</title>
+  <title>Fishy Data, showcase</title>
   <style>
     /*
       The original design shipped with uneven margins, inline styles and an embedded
@@ -551,7 +551,7 @@
   <div class="wrap">
     <!-- Navigation bar -->
     <div class="nav">
-      <div class="brand"><div class="logo"></div><div>SmartFish Monitor</div></div>
+      <div class="brand"><div class="logo"></div><div>Fishy Data</div></div>
       <div class="tabs" role="tablist" aria-label="Main navigation">
         <button class="tab active" data-page="home" role="tab" aria-selected="true">Home</button>
         <button class="tab" data-page="product" role="tab" aria-selected="false">Product</button>
@@ -584,9 +584,9 @@
         <div class="inner homeContainer">
           <div class="homeGrid">
             <div>
-              <div class="title">Using ultrasonic sensors, our product measures fish in the capture tank and emails the weight</div>
-              <p class="lede">SmartFish Monitor shows how much fish is in the capture tank, in real time. The design is calm, the numbers are clear, decisions are faster. You see progress toward the quota and you stay in control.</p>
-              <p class="para">The system is built to be straightforward. The controller reads the level, converts it to volume, then converts it to kilograms. You get a clean view and an email when you approach your limit.</p>
+              <div class="title">Fishy Data - product measures weight</div>
+              <p class="lede">Fishy Data shows how much fish is in the capture tank, in real time. The design is calm, the numbers are clear, decisions are faster. You see progress toward the quota and you stay in control.</p>
+              <p class="para">The system is built to be straightforward. The controller reads the level, converts it to volume, then converts it to kilograms. You get a clean view and an notification when you approach your limit.</p>
               <hr class="hrx" />
               <div class="chips">
                 <span class="chip">Real time data</span>
@@ -596,7 +596,7 @@
               <div class="stats">
                 <div class="stat reveal"><div class="num">0.002 m</div><div class="label">Depth resolution, calibration needed for tank and density</div></div>
                 <div class="stat reveal"><div class="num">Battery</div><div class="label">Demo controller power source</div></div>
-                <div class="stat reveal"><div class="num">75 percent</div><div class="label">Email and LED warning at this quota level</div></div>
+                <div class="stat reveal"><div class="num">75 percent</div><div class="label">Warning at this quota level</div></div>
                 <div class="stat reveal"><div class="num">0 to 25 C</div><div class="label">Demo enclosure range, not water tight</div></div>
                 <div class="stat reveal"><div class="num">Hurdell Delta</div><div class="label">Controller model</div></div>
               </div>
@@ -624,25 +624,21 @@
       <article class="card reveal">
         <div class="inner">
           <div class="title">Product overview</div>
-          <p class="lede">The goal is clarity. SmartFish Monitor focuses on live measurements, simple summaries, and a reliable sense of progress against your quota. No heavy menus, no complex flows, only the essentials.</p>
+          <p class="lede">The goal is clarity. Fishy Data focuses on live measurements, simple summaries, and a reliable sense of progress against your quota. No heavy menus, no complex flows, only the essentials.</p>
           <div class="grid2">
             <div>
               <div class="feature reveal">
-                <h3>What SmartFish Monitor does</h3>
-                <p>Using ultrasonic sensors, the system measures how much fish is in the capture tank and emails the customer the weight. Simple setup, simple view, clear numbers.</p>
+                <h3>What Fishy Data does</h3>
+                <p>Using ultrasonic sensors, the system measures how much fish is in the capture tank and notification the customer the weight. Simple setup, simple view, clear numbers.</p>
                 <p class="para">You see current levels, recent change, and totals for the period you care about. The interface avoids clutter, it keeps the focus on values that help you act.</p>
               </div>
-              <div class="grid3">
-                <div class="feature reveal"><h3>Quota information</h3><p>Track progress against the target, stay within limits. A quota is your allowable catch weight per day, month or year.</p></div>
-                <div class="feature reveal"><h3>Totals by period</h3><p>Fish caught per day, month, year, kg.</p></div>
-                <div class="feature reveal"><h3>Real time</h3><p>Fresh readings, clear state, quick checks on deck.</p></div>
-              </div>
+              <!-- Removed quota information, totals by period and real time cards -->
               <div class="feature reveal">
                 <h3>How it works, three steps</h3>
                 <div class="steps">
                   <div class="step"><div class="bubble">1</div><div>Measure displacement of water in the capture tank, ultrasonic sensor reads level change.</div></div>
-                  <div class="step"><div class="bubble">2</div><div>Calculate fish weight from level change, tank area and water density are used for conversion.</div></div>
-                  <div class="step"><div class="bubble">3</div><div>Send information to customers, email notifications include current totals and quota status.</div></div>
+                  <div class="step"><div class="bubble">2</div><div>Calculate fish weight from level change, tank area and fish density are used for conversion.</div></div>
+                  <div class="step"><div class="bubble">3</div><div>Information avaiable to customers include current totals and quota status.</div></div>
                 </div>
                 <p class="para">Accuracy depends on calibration. Enter the tank geometry and the correct water density for your conditions, then verify with a known load.</p>
               </div>
@@ -657,7 +653,7 @@
               <div class="feature reveal">
                 <h3>Hardware specs</h3>
                 <div class="specs">
-                  <div class="specrow"><div class="key">Controller</div><div>Hurdell Delta</div></div>
+                  <div class="specrow"><div class="key">Controller</div><div>Raspberry pi</div></div>
                   <div class="specrow"><div class="key">Sensors</div><div>Ultrasonic, high frequency</div></div>
                   <div class="specrow"><div class="key">Accuracy</div><div>0.002 m, depth resolution</div></div>
                   <div class="specrow"><div class="key">Power</div><div>Battery powered</div></div>
@@ -667,22 +663,15 @@
               </div>
               <div class="feature reveal">
                 <h3>Quotas and alerts</h3>
-                <p>Customers can set quotas for day, month, year, kilograms. A quota is the catch weight limit you choose or that is defined by regulators. Warnings are sent as emails and LED when 75 percent of your quota is met. When the full quota is met, an email is sent.</p>
-                <p class="para">Email is the primary channel for notices. The LED on the device gives a quick local hint about your state.</p>
+                <p>Customers can set quotas for day. A quota is the catch weight limit you choose or that is defined by regulators. Warnings are sent on dashboard</p>
+                <p class="para">Website is the primary channel for notices. The LED on the device gives a quick local hint about your state.</p>
               </div>
               <div class="feature reveal">
                 <h3>Security and privacy</h3>
-                <p>Local storage for configuration, emails sent via Google with encryption in transit. No customer information is collected at this time.</p>
-                <p class="para">Configuration stays on the device or on the local controller. Reports are delivered by email, which keeps the footprint small.</p>
+                <p>User data is protected with login credentials through the use of API cloud server. Our company is unable to view their data.</p>
+                <p class="para">Configuration stays on the device or on the local controller. Reports are delivered on website, which keeps the footprint small.</p>
               </div>
-              <div class="feature reveal">
-                <h3>Roadmap, coming soon</h3>
-                <ul style="margin:0; padding-left:18px; color: var(--muted);">
-                  <li>Evidence attachments, photos and videos per event</li>
-                  <li>External integrations, to be confirmed with early users</li>
-                  <li>Pilot locations, to be defined with partners</li>
-                </ul>
-              </div>
+              <!-- Removed roadmap section -->
             </div>
           </div>
           <div class="cta cta-single">
@@ -747,12 +736,12 @@
           <div class="title">FAQ</div>
           <div class="qa" style="margin-top:10px;">
             <div class="feature reveal"><div class="q">How accurate is the measurement</div><p>Depth resolution is 0.002 m. Weight conversion depends on calibration of tank area and water density.</p></div>
-            <div class="feature reveal"><div class="q">What alerts do I get</div><p>Email and LED when 75 percent of quota is reached, email when the quota is fully reached.</p></div>
+            <div class="feature reveal"><div class="q">What alerts do I get</div><p>Warnings when 75 percent of quota is reached and when the quota is fully reached.</p></div>
             <div class="feature reveal"><div class="q">Can I use it on battery only</div><p>Yes, the controller runs on battery power for the demo configuration.</p></div>
             <div class="feature reveal"><div class="q">Who is it for</div><p>Commercial fishermen and government users who need clear quota tracking and simple summaries.</p></div>
             <div class="feature reveal"><div class="q">What is the implementation like</div><p>Implementation is a focus area. The goal is simple setup and clear calibration steps.</p></div>
-            <div class="feature reveal"><div class="q">What information is stored</div><p>Configuration is local, emails are sent through Google, customer information is not collected at this time.</p></div>
-            <div class="feature reveal"><div class="q">What happens when the quota is exceeded</div><p>An email is sent, next actions depend on your process and rules.</p></div>
+            <div class="feature reveal"><div class="q">What information is stored</div><p>Information is stored on a secure API service and displayed on the users dashboard.</p></div>
+            <div class="feature reveal"><div class="q">What happens when the quota is exceeded</div><p>The user gets warnings on their dashboard when they reach desired quota</p></div>
           </div>
         </div>
       </article>
@@ -789,7 +778,7 @@
           <div class="grid3">
             <div class="feature reveal"><h3>Email</h3><p><a href="mailto:joehurndell1@gmail.com">joehurndell1@gmail.com</a></p></div>
             <div class="feature reveal"><h3>Location</h3><p>Christchurch, New Zealand</p></div>
-            <div class="feature reveal"><h3>Privacy</h3><p>We do not collect any customer information at this time.</p></div>
+            <!-- Removed privacy card -->
           </div>
           <div class="feature reveal">
             <h3>Team motto</h3>
