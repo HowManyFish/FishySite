@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
       - name: node
-        image: asskit/fishy-site:build-20250925012409 # {"$imagepolicy": "fishy-site:fishy-image-policy"}
+        image: asskit/fishy-site:build-20250925030052 # {"$imagepolicy": "fishy-site:fishy-image-policy"}
         ports:
         - name: web
           containerPort: 8080
