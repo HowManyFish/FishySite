@@ -10,7 +10,9 @@ spec:
   progressDeadlineSeconds: 600
   revisionHistoryLimit: 2
   strategy:
-    type: Recreate
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
   selector:
     matchLabels:
       app: node
